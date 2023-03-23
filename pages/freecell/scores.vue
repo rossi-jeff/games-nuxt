@@ -7,7 +7,6 @@
 </template>
 
 <script lang="ts" setup>
-import FreeCellScoresList from "../../components/FreeCellScoresList.vue";
 import { FreeCell } from "../../utils/types/free-cell.type";
 
 let Items: FreeCell[] = reactive([]);
