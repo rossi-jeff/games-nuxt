@@ -1,5 +1,3 @@
-
-
 <template>
 	<div class="yacht-game">
 		<h1>Yacht</h1>

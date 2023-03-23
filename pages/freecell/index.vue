@@ -4,6 +4,9 @@
       <button @click="deal" v-if="state.status != GameStatus.Playing">
         Deal
       </button>
+      <button v-if="state.status == GameStatus.Playing" @click="quit">
+        Quit
+      </button>
       <button v-if="state.autocomplete" @click="autoComplete">
         Auto Complete
       </button>
@@ -268,6 +271,10 @@
         />
       </div>
     </div>
+    <!-- scores link -->
+    <div class="scores-link">
+      <NuxtLink to="/freecell/scores">See Top Scores</NuxtLink>
+    </div>
   </div>
 </template>
 
@@ -276,21 +283,28 @@ import { Deck } from "../../utils/deck.class";
 import { CardHolder } from "../../utils/card-holder.class";
 import { Card } from "../../utils/card.class";
 import { GameStatus } from "../../utils/enum/game-status.enum";
+import { FreeCell } from "../../utils/types/free-cell.type";
 
 let deck = new Deck();
 const tableau = new CardHolder(8);
 const aces = new CardHolder(4);
 const free = new CardHolder(4);
 let status: GameStatus | undefined;
+let free_cell: FreeCell = {};
 const state = reactive({
   deck,
   tableau,
   aces,
   free,
   status,
+  free_cell,
+  moves: 0,
+  elapsed: 0,
   autocomplete: false,
 });
 let timeout: ReturnType<typeof setTimeout> | undefined;
+let interval: ReturnType<typeof setInterval> | undefined;
+let start: number;
 
 const deal = () => {
   state.deck = new Deck();
@@ -300,6 +314,7 @@ const deal = () => {
   state.free.clear();
   state.status = GameStatus.Playing;
   let counter = 0;
+  start = Date.now();
   while (state.deck.cards.length > 0) {
     const card = state.deck.draw();
     if (card) {
@@ -309,7 +324,53 @@ const deal = () => {
       counter++;
     }
   }
+  newGame();
   setDraggable();
+};
+
+const newGame = async () => {
+  try {
+    const result = await fetch(`${apiUrl}/api/free_cell`, {
+      method: "POST",
+      headers: buildRequestHeaders(blankSession),
+    });
+    if (result.ok) {
+      state.free_cell = await result.json();
+      clock();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateGame = async () => {
+  const { free_cell, moves: Moves, elapsed: Elapsed, status: Status } = state;
+  if (!free_cell.id) return;
+  try {
+    const result = await fetch(`${apiUrl}/api/free_cell/${free_cell.id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ Moves, Elapsed, Status }),
+      headers: buildRequestHeaders(blankSession),
+    });
+    if (result.ok) {
+      state.free_cell = await result.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const quit = () => {
+  if (interval) clearInterval(interval);
+  state.status = GameStatus.Lost;
+  updateGame();
+};
+
+const clock = () => {
+  state.elapsed = 0;
+  interval = setInterval(() => {
+    state.elapsed = Math.round((Date.now() - start) / 1000);
+  }, 1000);
 };
 
 const setDraggable = () => {
@@ -514,6 +575,7 @@ const moveCards = (from: string, cardId: number, to: string) => {
         }
         break;
     }
+    state.moves++;
     setDraggable();
   }
 };
@@ -631,6 +693,7 @@ const maxFreeSpace = () => {
 };
 
 const autoComplete = () => {
+  if (interval) clearInterval(interval);
   timeout = setTimeout(() => autoMoveCard(), 250);
 };
 
@@ -672,7 +735,7 @@ const autoMoveCard = () => {
     }
   }
   if (lowestCard && fromType && fromIdx != undefined) {
-    aceIdx = undefined
+    aceIdx = undefined;
     for (let i = 0; i < state.aces.columns.length; i++) {
       lastCard = undefined;
       length = state.aces.columns[i].cards.length;
@@ -694,17 +757,23 @@ const autoMoveCard = () => {
         card = state.tableau.columns[fromIdx].cards.pop();
       }
       if (card) {
+        card.draggable = false;
         state.aces.columns[aceIdx].cards.push(card);
-        timeout = setTimeout(() => autoMoveCard(), 250);
+        timeout = setTimeout(() => autoMoveCard(), 150);
+        state.moves++;
       }
     }
   } else {
-    state.autocomplete = false
-    let aceCount = 0
+    state.autocomplete = false;
+    let aceCount = 0;
     for (let i = 0; i < state.aces.columns.length; i++) {
-      aceCount += state.aces.columns[i].cards.length
+      aceCount += state.aces.columns[i].cards.length;
     }
-    if (aceCount == 52) state.status = GameStatus.Won
+    if (aceCount == 52) {
+      state.status = GameStatus.Won;
+      state.elapsed = Math.round((Date.now() - start) / 1000);
+      updateGame();
+    }
   }
 };
 </script>
@@ -712,6 +781,12 @@ const autoMoveCard = () => {
 <style lang="postcss">
 div.free-cell-game {
   @apply p-2;
+}
+div.buttons {
+  @apply mx-2 h-12;
+}
+div.buttons button {
+  @apply mr-2;
 }
 div.top-row {
   @apply flex flex-wrap justify-between mx-2 mb-4;
@@ -739,5 +814,11 @@ div.over {
 }
 div.ace-cell img.playing-card-img {
   @apply cursor-pointer;
+}
+button {
+  @apply border border-black rounded my-1 px-2 py-1;
+}
+button:hover {
+  @apply bg-yellow-200;
 }
 </style>
