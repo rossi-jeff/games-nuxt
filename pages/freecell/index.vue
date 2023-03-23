@@ -289,9 +289,6 @@
 </template>
 
 <script lang="ts" setup>
-import { Deck } from '../../utils/deck.class'
-import { CardHolder } from '../../utils/card-holder.class'
-import { Card } from '../../utils/card.class'
 import { GameStatus } from '../../utils/enum/game-status.enum'
 import { FreeCell } from '../../utils/types/free-cell.type'
 
@@ -317,16 +314,19 @@ let interval: ReturnType<typeof setInterval> | undefined
 let start: number
 
 const deal = () => {
+	removeCards()
 	state.deck = new Deck()
 	state.deck.shuffle()
 	state.tableau.clear()
 	state.aces.clear()
 	state.free.clear()
-	removeCards()
 	state.status = GameStatus.Playing
 	console.log(state)
 	let counter = 0
 	start = Date.now()
+	state.moves = 0
+	state.elapsed = 0
+	state.autocomplete = false
 	while (state.deck.cards.length > 0) {
 		const card = state.deck.draw()
 		if (card) {
@@ -342,8 +342,12 @@ const deal = () => {
 
 const removeCards = () => {
 	const cards = document.getElementsByClassName('playing-card')
-	while (cards.length > 0) {
-		cards[0].parentNode?.removeChild(cards[0])
+	while (cards.length) {
+		const card = cards[0]
+		const el = document.getElementById(card.id)
+		if (el) {
+			el.remove()
+		}
 	}
 }
 
@@ -383,6 +387,7 @@ const quit = () => {
 	if (interval) clearInterval(interval)
 	state.status = GameStatus.Lost
 	updateGame()
+	removeCards()
 }
 
 const clock = () => {
