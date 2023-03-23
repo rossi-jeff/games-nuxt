@@ -278,7 +278,7 @@ const deal = () => {
 			state.stock.columns[0].cards.push(card)
 		}
 	}
-	clock()
+	newGame()
 }
 
 const removeCards = () => {
@@ -302,6 +302,21 @@ const removeCards = () => {
 const toggleRendered = () => {
 	state.rendered = false
 	setTimeout(() => (state.rendered = true), 25)
+}
+
+const newGame = async () => {
+	try {
+		const result = await fetch(`${apiUrl}/api/klondike`, {
+			method: 'POST',
+			headers: buildRequestHeaders(blankSession),
+		})
+		if (result.ok) {
+			state.klondike = await result.json()
+			clock()
+		}
+	} catch (error) {
+		console.log(error)
+	}
 }
 
 const clock = () => {
@@ -494,10 +509,10 @@ const moveCards = (from: string, cardId: number, to: string) => {
 	const toParts = to.split('-')
 	const toWhere = toParts.shift()
 	let toIdx: string | number | undefined = toParts.pop()
-	const toMove: Card[] = []
+	const toMove = []
 	let idx: number = -1,
-		card: Card | undefined,
-		cards: Card[] = []
+		card,
+		cards = []
 	if (fromWhere && toWhere) {
 		switch (fromWhere) {
 			case 'waste':
@@ -565,6 +580,7 @@ const moveCards = (from: string, cardId: number, to: string) => {
 				break
 		}
 		state.moves++
+		setStatus()
 		// toggleRendered()
 	}
 }
@@ -604,9 +620,42 @@ const quit = () => {
 	updateGame()
 }
 
+const setStatus = () => {
+	const stockCount = state.stock.columns[0].cards.length
+	const wasteCount = state.waste.columns[0].cards.length
+	let faceDownCount = 0
+	for (let i = 0; i < state.tableau.columns.length; i++) {
+		faceDownCount += state.tableau.columns[i].cards.length
+	}
+	state.autocomplete = stockCount == 0 ?? wasteCount == 0 ?? faceDownCount == 0
+	let aceCount = 0
+	for (let i = 0; i < state.aces.columns.length; i++) {
+		aceCount += state.aces.columns[i].cards.length
+	}
+	if (aceCount == 52) {
+		state.status = GameStatus.Won
+		updateGame()
+	}
+}
+
 const autoComplete = () => {}
 
-const updateGame = () => {}
+const updateGame = async () => {
+	const { klondike, moves: Moves, elapsed: Elapsed, status: Status } = state
+	if (!klondike.id) return
+	try {
+		const result = await fetch(`${apiUrl}/api/klondike/${klondike.id}`, {
+			method: 'PATCH',
+			body: JSON.stringify({ Moves, Elapsed, Status }),
+			headers: buildRequestHeaders(blankSession),
+		})
+		if (result.ok) {
+			state.klondike = await result.json()
+		}
+	} catch (error) {
+		console.log(error)
+	}
+}
 </script>
 
 <style lang="postcss">

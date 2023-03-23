@@ -439,7 +439,7 @@ const setStatus = () => {
 	for (let i = 0; i < aces.columns.length; i++) {
 		if (aces.columns[i].cards.length == 0) allAces = false
 	}
-	let current: Card | undefined, previous: Card | undefined
+	let current, previous
 	for (let i = 0; i < tableau.columns.length; i++) {
 		previous = undefined
 		current = undefined
@@ -454,7 +454,15 @@ const setStatus = () => {
 			}
 			previous = current
 		}
-		state.autocomplete = allDescending && allAces
+	}
+	state.autocomplete = allDescending && allAces
+	let aceCount = 0
+	for (let i = 0; i < state.aces.columns.length; i++) {
+		aceCount += state.aces.columns[i].cards.length
+	}
+	if (aceCount == 52) {
+		state.status = GameStatus.Won
+		updateGame()
 	}
 }
 
@@ -534,9 +542,9 @@ const moveCards = (from: string, cardId: number, to: string) => {
 	const toParts = to.split('-')
 	const toWhere = toParts.shift()
 	let toIdx: string | number | undefined = toParts.pop()
-	const toMove: Card[] = []
+	const toMove = []
 	let idx: number = -1,
-		card: Card | undefined
+		card
 	if (fromWhere && fromIdx && toWhere && toIdx) {
 		fromIdx = parseInt(fromIdx)
 		toIdx = parseInt(toIdx)
@@ -722,8 +730,8 @@ const autoMoveCard = () => {
 	let fromType: string | undefined,
 		fromIdx: number | undefined,
 		aceIdx: number | undefined,
-		lowestCard: Card | undefined,
-		lastCard: Card | undefined,
+		lowestCard,
+		lastCard,
 		length: number
 	for (let i = 0; i < state.free.columns.length; i++) {
 		lastCard = undefined
@@ -769,7 +777,7 @@ const autoMoveCard = () => {
 			}
 		}
 		if (aceIdx != undefined) {
-			let card: Card | undefined
+			let card
 			if (fromType == 'free') {
 				card = state.free.columns[fromIdx].cards.pop()
 			} else if (fromType == 'tableau') {
