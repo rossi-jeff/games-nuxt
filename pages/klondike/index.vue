@@ -221,6 +221,10 @@
 				/>
 			</div>
 		</div>
+		<!-- scores link -->
+		<div class="scores-link">
+			<NuxtLink to="/klondike/scores">See Top Scores</NuxtLink>
+		</div>
 	</div>
 </template>
 
@@ -421,7 +425,6 @@ const drop = (event: any) => {
 		}
 	}
 	if (['stock', 'waste'].includes(to)) return
-	console.log({ from, level, cardId, to, qty })
 	if (canDrop(from, cardId, to, qty)) {
 		moveCards(from, cardId, to)
 	}
@@ -625,20 +628,86 @@ const setStatus = () => {
 	const wasteCount = state.waste.columns[0].cards.length
 	let faceDownCount = 0
 	for (let i = 0; i < state.tableau.columns.length; i++) {
-		faceDownCount += state.tableau.columns[i].cards.length
+		for (let j = 0; j < state.tableau.columns[i].cards.length; j++) {
+			const card = state.tableau.columns[i].cards[j]
+			if (card && card.facedown) faceDownCount++
+		}
 	}
-	state.autocomplete = stockCount == 0 ?? wasteCount == 0 ?? faceDownCount == 0
+	state.autocomplete = stockCount == 0 && wasteCount == 0 && faceDownCount == 0
 	let aceCount = 0
 	for (let i = 0; i < state.aces.columns.length; i++) {
 		aceCount += state.aces.columns[i].cards.length
 	}
 	if (aceCount == 52) {
+		if (interval) clearInterval(interval)
 		state.status = GameStatus.Won
 		updateGame()
 	}
 }
 
-const autoComplete = () => {}
+const autoComplete = () => {
+	if (interval) clearInterval(interval)
+	timeout = setTimeout(() => autoMoveCard(), 250)
+}
+
+const autoMoveCard = () => {
+	if (timeout) clearTimeout(timeout)
+	const { deck } = state
+	let fromIdx: number | undefined,
+		aceIdx: number | undefined,
+		lowestCard,
+		lastCard,
+		length: number
+	for (let i = 0; i < state.tableau.columns.length; i++) {
+		lastCard = undefined
+		length = state.tableau.columns[i].cards.length
+		if (length) lastCard = state.tableau.columns[i].cards[length - 1]
+		if (
+			lastCard &&
+			(!lowestCard ||
+				deck.faces.indexOf(lastCard.face) < deck.faces.indexOf(lowestCard.face))
+		) {
+			lowestCard = lastCard
+			fromIdx = i
+		}
+	}
+	if (lowestCard && fromIdx != undefined) {
+		aceIdx = undefined
+		for (let i = 0; i < state.aces.columns.length; i++) {
+			lastCard = undefined
+			length = state.aces.columns[i].cards.length
+			if (length) lastCard = state.aces.columns[i].cards[length - 1]
+			if (
+				lastCard &&
+				lastCard.suit == lowestCard.suit &&
+				deck.faces.indexOf(lowestCard.face) ==
+					deck.faces.indexOf(lastCard.face) + 1
+			) {
+				aceIdx = i
+			}
+		}
+		if (aceIdx != undefined) {
+			let card = state.tableau.columns[fromIdx].cards.pop()
+			if (card) {
+				card.draggable = false
+				state.aces.columns[aceIdx].cards.push(card)
+				timeout = setTimeout(() => autoMoveCard(), 150)
+				state.moves++
+			}
+		}
+	} else {
+		state.autocomplete = false
+		let aceCount = 0
+		for (let i = 0; i < state.aces.columns.length; i++) {
+			aceCount += state.aces.columns[i].cards.length
+		}
+		if (aceCount == 52) {
+			state.status = GameStatus.Won
+			state.elapsed = Math.round((Date.now() - start) / 1000)
+			updateGame()
+		}
+	}
+}
 
 const updateGame = async () => {
 	const { klondike, moves: Moves, elapsed: Elapsed, status: Status } = state
