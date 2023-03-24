@@ -1,5 +1,5 @@
 <template>
-	<div class="free-cell-game">
+	<div class="klondike-game" v-if="state.rendered">
 		<div class="header-row">
 			<div class="buttons">
 				<button @click="deal" v-if="state.status != GameStatus.Playing">
@@ -23,67 +23,23 @@
 		</div>
 		<div class="top-row">
 			<div class="top-row-left">
-				<div
-					class="free-cell"
-					id="free-cell-0"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
+				<div class="stock" id="stock" @click="stockCellClicked">
 					<PlayingCard
-						v-for="card of state.free.columns[0].cards"
+						v-for="card of state.stock.columns[0].cards"
 						:key="card.id"
 						:card="card"
-						from="free-cell-0"
 						:level="0"
-						@drag-start="dragStart"
+						from="stock"
+						@click="stockCardClicked"
 					/>
 				</div>
-				<div
-					class="free-cell"
-					id="free-cell-1"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
+				<div class="waste" id="waste">
 					<PlayingCard
-						v-for="card of state.free.columns[1].cards"
+						v-for="card of state.waste.columns[0].cards"
 						:key="card.id"
 						:card="card"
-						from="free-cell-1"
 						:level="0"
-						@drag-start="dragStart"
-					/>
-				</div>
-				<div
-					class="free-cell"
-					id="free-cell-2"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.free.columns[2].cards"
-						:key="card.id"
-						:card="card"
-						from="free-cell-2"
-						:level="0"
-						@drag-start="dragStart"
-					/>
-				</div>
-				<div
-					class="free-cell"
-					id="free-cell-3"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.free.columns[3].cards"
-						:key="card.id"
-						:card="card"
-						from="free-cell-3"
-						:level="0"
+						from="waste"
 						@drag-start="dragStart"
 					/>
 				</div>
@@ -100,8 +56,8 @@
 						v-for="card of state.aces.columns[0].cards"
 						:key="card.id"
 						:card="card"
-						from="ace-cell-0"
 						:level="0"
+						from="ace-cell-0"
 					/>
 				</div>
 				<div
@@ -115,8 +71,8 @@
 						v-for="card of state.aces.columns[1].cards"
 						:key="card.id"
 						:card="card"
-						from="ace-cell-1"
 						:level="0"
+						from="ace-cell-1"
 					/>
 				</div>
 				<div
@@ -130,8 +86,8 @@
 						v-for="card of state.aces.columns[2].cards"
 						:key="card.id"
 						:card="card"
-						from="ace-cell-2"
 						:level="0"
+						from="ace-cell-2"
 					/>
 				</div>
 				<div
@@ -145,8 +101,8 @@
 						v-for="card of state.aces.columns[3].cards"
 						:key="card.id"
 						:card="card"
-						from="ace-cell-3"
 						:level="0"
+						from="ace-cell-3"
 					/>
 				</div>
 			</div>
@@ -163,8 +119,8 @@
 					v-for="(card, level) of state.tableau.columns[0].cards"
 					:key="card.id"
 					:card="card"
-					from="tableau-0"
 					:level="level"
+					from="tableau-0"
 					@drag-start="dragStart"
 				/>
 			</div>
@@ -179,8 +135,8 @@
 					v-for="(card, level) of state.tableau.columns[1].cards"
 					:key="card.id"
 					:card="card"
-					from="tableau-1"
 					:level="level"
+					from="tableau-1"
 					@drag-start="dragStart"
 				/>
 			</div>
@@ -195,8 +151,8 @@
 					v-for="(card, level) of state.tableau.columns[2].cards"
 					:key="card.id"
 					:card="card"
-					from="tableau-2"
 					:level="level"
+					from="tableau-2"
 					@drag-start="dragStart"
 				/>
 			</div>
@@ -211,8 +167,8 @@
 					v-for="(card, level) of state.tableau.columns[3].cards"
 					:key="card.id"
 					:card="card"
-					from="tableau-3"
 					:level="level"
+					from="tableau-3"
 					@drag-start="dragStart"
 				/>
 			</div>
@@ -227,8 +183,8 @@
 					v-for="(card, level) of state.tableau.columns[4].cards"
 					:key="card.id"
 					:card="card"
-					from="tableau-4"
 					:level="level"
+					from="tableau-4"
 					@drag-start="dragStart"
 				/>
 			</div>
@@ -243,8 +199,8 @@
 					v-for="(card, level) of state.tableau.columns[5].cards"
 					:key="card.id"
 					:card="card"
-					from="tableau-5"
 					:level="level"
+					from="tableau-5"
 					@drag-start="dragStart"
 				/>
 			</div>
@@ -259,55 +215,42 @@
 					v-for="(card, level) of state.tableau.columns[6].cards"
 					:key="card.id"
 					:card="card"
+					:level="level"
 					from="tableau-6"
-					:level="level"
-					@drag-start="dragStart"
-				/>
-			</div>
-			<div
-				class="tableau"
-				id="tableau-7"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[7].cards"
-					:key="card.id"
-					:card="card"
-					from="tableau-7"
-					:level="level"
 					@drag-start="dragStart"
 				/>
 			</div>
 		</div>
 		<!-- scores link -->
 		<div class="scores-link">
-			<NuxtLink to="/freecell/scores">See Top Scores</NuxtLink>
+			<NuxtLink to="/klondike/scores">See Top Scores</NuxtLink>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import { GameStatus } from '../../utils/enum/game-status.enum'
-import { FreeCell } from '../../utils/types/free-cell.type'
+import { Klondike } from '../../utils/types/klondike.type'
 
 let deck = new Deck()
-const tableau = new CardHolder(8)
+const tableau = new CardHolder(7)
 const aces = new CardHolder(4)
-const free = new CardHolder(4)
+const stock = new CardHolder(1)
+const waste = new CardHolder(1)
+let klondike: Klondike = {}
 let status: GameStatus | undefined
-let free_cell: FreeCell = {}
 const state = reactive({
 	deck,
 	tableau,
 	aces,
-	free,
+	stock,
+	waste,
+	klondike,
 	status,
-	free_cell,
 	moves: 0,
 	elapsed: 0,
 	autocomplete: false,
+	rendered: true,
 })
 let timeout: ReturnType<typeof setTimeout> | undefined
 let interval: ReturnType<typeof setInterval> | undefined
@@ -315,29 +258,31 @@ let start: number
 
 const deal = () => {
 	removeCards()
-	state.deck = new Deck()
-	state.deck.shuffle()
-	state.tableau.clear()
-	state.aces.clear()
-	state.free.clear()
-	state.status = GameStatus.Playing
-	console.log(state)
-	let counter = 0
 	start = Date.now()
+	state.status = GameStatus.Playing
 	state.moves = 0
 	state.elapsed = 0
 	state.autocomplete = false
-	while (state.deck.cards.length > 0) {
+	for (let i = 0; i < 7; i++) {
+		for (let j = i; j < 7; j++) {
+			const card = state.deck.draw()
+			if (card) {
+				if (i === j) {
+					card.facedown = false
+					card.draggable = true
+				}
+				state.tableau.columns[j].cards.push(card)
+			}
+		}
+	}
+	while (state.deck.cards.length) {
 		const card = state.deck.draw()
 		if (card) {
-			card.facedown = false
-			if (counter >= state.tableau.columns.length) counter = 0
-			state.tableau.columns[counter].cards.push(card)
-			counter++
+			card.clickable = true
+			state.stock.columns[0].cards.push(card)
 		}
 	}
 	newGame()
-	setDraggable()
 }
 
 const removeCards = () => {
@@ -349,45 +294,33 @@ const removeCards = () => {
 			el.remove()
 		}
 	}
+	state.deck = new Deck()
+	state.deck.shuffle()
+	state.tableau.clear()
+	state.aces.clear()
+	state.stock.clear()
+	state.waste.clear()
+	toggleRendered()
+}
+
+const toggleRendered = () => {
+	state.rendered = false
+	setTimeout(() => (state.rendered = true), 25)
 }
 
 const newGame = async () => {
 	try {
-		const result = await fetch(`${apiUrl}/api/free_cell`, {
+		const result = await fetch(`${apiUrl}/api/klondike`, {
 			method: 'POST',
 			headers: buildRequestHeaders(blankSession),
 		})
 		if (result.ok) {
-			state.free_cell = await result.json()
+			state.klondike = await result.json()
 			clock()
 		}
 	} catch (error) {
 		console.log(error)
 	}
-}
-
-const updateGame = async () => {
-	const { free_cell, moves: Moves, elapsed: Elapsed, status: Status } = state
-	if (!free_cell.id) return
-	try {
-		const result = await fetch(`${apiUrl}/api/free_cell/${free_cell.id}`, {
-			method: 'PATCH',
-			body: JSON.stringify({ Moves, Elapsed, Status }),
-			headers: buildRequestHeaders(blankSession),
-		})
-		if (result.ok) {
-			state.free_cell = await result.json()
-		}
-	} catch (error) {
-		console.log(error)
-	}
-}
-
-const quit = () => {
-	if (interval) clearInterval(interval)
-	state.status = GameStatus.Lost
-	updateGame()
-	removeCards()
 }
 
 const clock = () => {
@@ -397,72 +330,36 @@ const clock = () => {
 	}, 1000)
 }
 
-const setDraggable = () => {
-	const { deck } = state
-	for (let i = 0; i < state.aces.columns.length; i++) {
-		const length = state.aces.columns[i].cards.length
-		for (let j = 0; j < length; j++) {
-			state.aces.columns[i].cards[j].draggable = false
+const stockCardClicked = (event: any) => {
+	const { id } = event
+	if (!id) return
+	let [from, _, cardId] = id.split('_')
+	if (from != 'stock') return
+	cardId = parseInt(cardId)
+	const idx = state.stock.columns[0].cards.findIndex((c) => c.id == cardId)
+	if (idx == state.stock.columns[0].cards.length - 1) {
+		const card = state.stock.columns[0].cards.pop()
+		if (card) {
+			card.facedown = false
+			card.clickable = false
+			card.draggable = true
+			state.waste.columns[0].cards.push(card)
+			state.moves++
+			// toggleRendered()
 		}
 	}
-	for (let i = 0; i < state.tableau.columns.length; i++) {
-		const length = state.tableau.columns[i].cards.length
-		for (let j = 0; j < length; j++) {
-			state.tableau.columns[i].cards[j].draggable = false
-		}
-		for (let k = length - 1; k >= 0; k--) {
-			const l = k - 1
-			const cardK = state.tableau.columns[i].cards[k]
-			const cardL = l >= 0 ? state.tableau.columns[i].cards[l] : null
-			if (k == length - 1) {
-				cardK.draggable = true
-			}
-			if (
-				cardK &&
-				cardL &&
-				deck.color(cardK) != deck.color(cardL) &&
-				deck.faces.indexOf(cardL.face) == deck.faces.indexOf(cardK.face) + 1
-			) {
-				cardL.draggable = true
-			} else {
-				break
-			}
-		}
-	}
-	setStatus()
 }
 
-const setStatus = () => {
-	const { deck, tableau, aces } = state
-	let allDescending = true
-	let allAces = true
-	for (let i = 0; i < aces.columns.length; i++) {
-		if (aces.columns[i].cards.length == 0) allAces = false
-	}
-	let current, previous
-	for (let i = 0; i < tableau.columns.length; i++) {
-		previous = undefined
-		current = undefined
-		for (let j = tableau.columns[i].cards.length - 1; j >= 0; j--) {
-			current = tableau.columns[i].cards[j]
-			if (previous && current) {
-				const descending =
-					deck.color(previous) != deck.color(current) &&
-					deck.faces.indexOf(current.face) ==
-						deck.faces.indexOf(previous.face) + 1
-				if (!descending) allDescending = false
-			}
-			previous = current
+const stockCellClicked = () => {
+	if (state.stock.columns[0].cards.length) return
+	while (state.waste.columns[0].cards.length) {
+		const card = state.waste.columns[0].cards.pop()
+		if (card) {
+			card.facedown = true
+			card.draggable = false
+			card.clickable = true
+			state.stock.columns[0].cards.push(card)
 		}
-	}
-	state.autocomplete = allDescending && allAces
-	let aceCount = 0
-	for (let i = 0; i < state.aces.columns.length; i++) {
-		aceCount += state.aces.columns[i].cards.length
-	}
-	if (aceCount == 52) {
-		state.status = GameStatus.Won
-		updateGame()
 	}
 }
 
@@ -484,7 +381,6 @@ const dragEnter = (event: any) => {
 			if (
 				target &&
 				(target.classList.contains('tableau') ||
-					target.classList.contains('free-cell') ||
 					target.classList.contains('ace-cell'))
 			) {
 				target.classList.add('over')
@@ -508,7 +404,7 @@ const drop = (event: any) => {
 	let [from, level, cardId] = data.split('_')
 	level = parseInt(level)
 	cardId = parseInt(cardId)
-	const qty = dragCardQuantity(from, level)
+	const qty = dragCardQuantity(from, level, cardId)
 	let to: string = ''
 	let { target } = event
 	if (target) {
@@ -517,7 +413,6 @@ const drop = (event: any) => {
 			if (
 				target &&
 				(target.classList.contains('tableau') ||
-					target.classList.contains('free-cell') ||
 					target.classList.contains('ace-cell'))
 			) {
 				to = target.id
@@ -529,98 +424,22 @@ const drop = (event: any) => {
 			}
 		}
 	}
-	// console.log({ from, level, cardId, to, qty });
+	if (['stock', 'waste'].includes(to)) return
 	if (canDrop(from, cardId, to, qty)) {
 		moveCards(from, cardId, to)
 	}
 }
 
-const moveCards = (from: string, cardId: number, to: string) => {
-	const fromParts = from.split('-')
-	const fromWhere = fromParts.shift()
-	let fromIdx: string | number | undefined = fromParts.pop()
-	const toParts = to.split('-')
-	const toWhere = toParts.shift()
-	let toIdx: string | number | undefined = toParts.pop()
-	const toMove = []
-	let idx: number = -1,
-		card
-	if (fromWhere && fromIdx && toWhere && toIdx) {
-		fromIdx = parseInt(fromIdx)
-		toIdx = parseInt(toIdx)
-		switch (fromWhere) {
-			case 'tableau':
-				idx = state.tableau.columns[fromIdx].cards.findIndex(
-					(c) => c.id == cardId
-				)
-				if (idx > -1) {
-					while (state.tableau.columns[fromIdx].cards.length > idx) {
-						card = state.tableau.columns[fromIdx].cards.pop()
-						if (card) toMove.push(card)
-					}
-				}
-				break
-			case 'free':
-				idx = state.free.columns[fromIdx].cards.findIndex((c) => c.id == cardId)
-				if (idx > -1) {
-					while (state.free.columns[fromIdx].cards.length > idx) {
-						card = state.free.columns[fromIdx].cards.pop()
-						if (card) toMove.push(card)
-					}
-				}
-				break
-			case 'ace':
-				idx = state.aces.columns[fromIdx].cards.findIndex((c) => c.id == cardId)
-				if (idx > -1) {
-					while (state.aces.columns[fromIdx].cards.length > idx) {
-						card = state.aces.columns[fromIdx].cards.pop()
-						if (card) toMove.push(card)
-					}
-				}
-				break
-		}
-		switch (toWhere) {
-			case 'tableau':
-				while (toMove.length) {
-					card = toMove.pop()
-					if (card) state.tableau.columns[toIdx].cards.push(card)
-				}
-				break
-			case 'free':
-				while (toMove.length) {
-					card = toMove.pop()
-					if (card) state.free.columns[toIdx].cards.push(card)
-				}
-				break
-			case 'ace':
-				while (toMove.length) {
-					card = toMove.pop()
-					if (card) {
-						card.draggable = false
-						state.aces.columns[toIdx].cards.push(card)
-					}
-				}
-				break
-		}
-		state.moves++
-		setDraggable()
-	}
-}
-
 const canDrop = (from: string, cardId: number, to: string, qty: number) => {
 	const parts = to.split('-')
-	let idx: string | number | undefined = parts.pop()
 	const where = parts.shift()
-	const max = maxFreeSpace()
+	if (where == 'waste' || where == 'stock') return false
+	let idx: string | number | undefined = parts.pop()
 	if (idx && where) {
 		idx = parseInt(idx)
 		switch (where) {
 			case 'tableau':
-				if (qty > max) return false
 				return canDropTableau(from, cardId, idx)
-			case 'free':
-				if (qty != 1) return false
-				return canDropFree(idx)
 			case 'ace':
 				if (qty != 1) return false
 				return canDropAces(from, cardId, idx)
@@ -630,8 +449,20 @@ const canDrop = (from: string, cardId: number, to: string, qty: number) => {
 	} else return false
 }
 
-const canDropFree = (idx: number) => {
-	return state.free.columns[idx].cards.length == 0
+const canDropTableau = (from: string, cardId: number, idx: number) => {
+	const length = state.tableau.columns[idx].cards.length
+	const lastCard = state.tableau.columns[idx].cards[length - 1]
+	const draggedCard = getDraggedCard(from, cardId)
+	if (lastCard && draggedCard) {
+		const { deck } = state
+		return (
+			deck.color(lastCard) != deck.color(draggedCard) &&
+			deck.faces.indexOf(draggedCard.face) + 1 ==
+				deck.faces.indexOf(lastCard.face)
+		)
+	} else if (draggedCard) {
+		return draggedCard.face == 'king'
+	} else return false
 }
 
 const canDropAces = (from: string, cardId: number, idx: number) => {
@@ -645,57 +476,135 @@ const canDropAces = (from: string, cardId: number, idx: number) => {
 			deck.faces.indexOf(draggedCard.face) ==
 				deck.faces.indexOf(lastCard.face) + 1
 		)
-	} else if (draggedCard && draggedCard.face == 'ace') return true
-	else return false
-}
-
-const canDropTableau = (from: string, cardId: number, idx: number) => {
-	const length = state.tableau.columns[idx].cards.length
-	const lastCard = state.tableau.columns[idx].cards[length - 1]
-	const draggedCard = getDraggedCard(from, cardId)
-	if (lastCard && draggedCard) {
-		const { deck } = state
-		return (
-			deck.color(draggedCard) != deck.color(lastCard) &&
-			deck.faces.indexOf(draggedCard.face) + 1 ==
-				deck.faces.indexOf(lastCard.face)
-		)
-	} else return draggedCard ? true : false
+	} else if (draggedCard) {
+		return draggedCard.face == 'ace'
+	} else return false
 }
 
 const getDraggedCard = (from: string, cardId: number) => {
 	const parts = from.split('-')
-	let idx: string | number | undefined = parts.pop()
 	const where = parts.shift()
-	if (where && idx) {
-		idx = parseInt(idx)
+	let idx: string | number | undefined = parts.pop()
+	if (where) {
 		switch (where) {
 			case 'tableau':
-				return state.tableau.columns[idx].cards.find((c) => c.id == cardId)
-			case 'free':
-				return state.free.columns[idx].cards.find((c) => c.id == cardId)
+				if (idx == undefined) return null
+				return state.tableau.columns[parseInt(idx.toString())].cards.find(
+					(c) => c.id == cardId
+				)
+			case 'waste':
+				return state.waste.columns[0].cards.find((c) => c.id == cardId)
 			case 'ace':
-				return state.aces.columns[idx].cards.find((c) => c.id == cardId)
+				if (idx == undefined) return null
+				return state.aces.columns[parseInt(idx.toString())].cards.find(
+					(c) => c.id == cardId
+				)
 			default:
 				return null
 		}
 	} else return null
 }
 
-const dragCardQuantity = (from: string, level: number) => {
+const moveCards = (from: string, cardId: number, to: string) => {
+	const fromParts = from.split('-')
+	const fromWhere = fromParts.shift()
+	let fromIdx: string | number | undefined = fromParts.pop()
+	const toParts = to.split('-')
+	const toWhere = toParts.shift()
+	let toIdx: string | number | undefined = toParts.pop()
+	const toMove = []
+	let idx: number = -1,
+		card,
+		cards = []
+	if (fromWhere && toWhere) {
+		switch (fromWhere) {
+			case 'waste':
+				idx = state.waste.columns[0].cards.findIndex((c) => c.id == cardId)
+				if (idx > -1) {
+					while (state.waste.columns[0].cards.length > idx) {
+						card = state.waste.columns[0].cards.pop()
+						if (card) toMove.push(card)
+					}
+				}
+				break
+			case 'tableau':
+				if (fromIdx == undefined) break
+				cards = state.tableau.columns[parseInt(fromIdx.toString())].cards
+				idx = cards.findIndex((c) => c.id == cardId)
+				if (idx > -1) {
+					while (cards.length > idx) {
+						card = cards.pop()
+						if (card) toMove.push(card)
+					}
+					if (cards.length) {
+						card = cards[cards.length - 1]
+						if (card) {
+							card.facedown = false
+							card.draggable = true
+						}
+					}
+				}
+				break
+			case 'ace':
+				if (fromIdx == undefined) break
+				cards = state.aces.columns[parseInt(fromIdx.toString())].cards
+				idx = cards.findIndex((c) => c.id == cardId)
+				if (idx > -1) {
+					while (cards.length > idx) {
+						card = cards.pop()
+						if (card) toMove.push(card)
+					}
+				}
+				break
+		}
+		switch (toWhere) {
+			case 'waste':
+				break
+			case 'tableau':
+				if (toIdx == undefined) break
+				cards = state.tableau.columns[parseInt(toIdx.toString())].cards
+				while (toMove.length) {
+					card = toMove.pop()
+					if (card) {
+						cards.push(card)
+					}
+				}
+				break
+			case 'ace':
+				if (toIdx == undefined) break
+				cards = state.aces.columns[parseInt(toIdx.toString())].cards
+				while (toMove.length) {
+					card = toMove.pop()
+					if (card) {
+						card.draggable = false
+						cards.push(card)
+					}
+				}
+				break
+		}
+		state.moves++
+		setStatus()
+		// toggleRendered()
+	}
+}
+
+const dragCardQuantity = (from: string, level: number, cardId: number) => {
 	const parts = from.split('-')
-	let idx: string | number | undefined = parts.pop()
 	const where = parts.shift()
-	if (idx && where) {
-		idx = parseInt(idx)
+	let idx: string | number | undefined = parts.pop()
+	idx = idx ? parseInt(idx) : 0
+	if (where) {
 		let length: number
 		switch (where) {
 			case 'tableau':
 				length = state.tableau.columns[idx].cards.length
 				return length - level
-			case 'free':
-				length = state.free.columns[idx].cards.length
-				return length - level
+			case 'waste':
+				length = state.waste.columns[0].cards.length
+				const idxC = state.waste.columns[0].cards.findIndex(
+					(c) => c.id == cardId
+				)
+				return length - idxC
 			case 'ace':
 				length = state.aces.columns[idx].cards.length
 				return length - level
@@ -707,16 +616,33 @@ const dragCardQuantity = (from: string, level: number) => {
 	}
 }
 
-const maxFreeSpace = () => {
-	let emptyFree = 0
-	let emptyTableau = 0
-	for (let i = 0; i < state.free.columns.length; i++) {
-		if (state.free.columns[i].cards.length == 0) emptyFree++
-	}
+const quit = () => {
+	if (interval) clearInterval(interval)
+	state.status = GameStatus.Lost
+	removeCards()
+	updateGame()
+}
+
+const setStatus = () => {
+	const stockCount = state.stock.columns[0].cards.length
+	const wasteCount = state.waste.columns[0].cards.length
+	let faceDownCount = 0
 	for (let i = 0; i < state.tableau.columns.length; i++) {
-		if (state.tableau.columns[i].cards.length == 0) emptyTableau++
+		for (let j = 0; j < state.tableau.columns[i].cards.length; j++) {
+			const card = state.tableau.columns[i].cards[j]
+			if (card && card.facedown) faceDownCount++
+		}
 	}
-	return emptyTableau * emptyFree + emptyFree + 1
+	state.autocomplete = stockCount == 0 && wasteCount == 0 && faceDownCount == 0
+	let aceCount = 0
+	for (let i = 0; i < state.aces.columns.length; i++) {
+		aceCount += state.aces.columns[i].cards.length
+	}
+	if (aceCount == 52) {
+		if (interval) clearInterval(interval)
+		state.status = GameStatus.Won
+		updateGame()
+	}
 }
 
 const autoComplete = () => {
@@ -727,26 +653,11 @@ const autoComplete = () => {
 const autoMoveCard = () => {
 	if (timeout) clearTimeout(timeout)
 	const { deck } = state
-	let fromType: string | undefined,
-		fromIdx: number | undefined,
+	let fromIdx: number | undefined,
 		aceIdx: number | undefined,
 		lowestCard,
 		lastCard,
 		length: number
-	for (let i = 0; i < state.free.columns.length; i++) {
-		lastCard = undefined
-		length = state.free.columns[i].cards.length
-		if (length) lastCard = state.free.columns[i].cards[length - 1]
-		if (
-			lastCard &&
-			(!lowestCard ||
-				deck.faces.indexOf(lastCard.face) < deck.faces.indexOf(lowestCard.face))
-		) {
-			lowestCard = lastCard
-			fromType = 'free'
-			fromIdx = i
-		}
-	}
 	for (let i = 0; i < state.tableau.columns.length; i++) {
 		lastCard = undefined
 		length = state.tableau.columns[i].cards.length
@@ -757,11 +668,10 @@ const autoMoveCard = () => {
 				deck.faces.indexOf(lastCard.face) < deck.faces.indexOf(lowestCard.face))
 		) {
 			lowestCard = lastCard
-			fromType = 'tableau'
 			fromIdx = i
 		}
 	}
-	if (lowestCard && fromType && fromIdx != undefined) {
+	if (lowestCard && fromIdx != undefined) {
 		aceIdx = undefined
 		for (let i = 0; i < state.aces.columns.length; i++) {
 			lastCard = undefined
@@ -777,12 +687,7 @@ const autoMoveCard = () => {
 			}
 		}
 		if (aceIdx != undefined) {
-			let card
-			if (fromType == 'free') {
-				card = state.free.columns[fromIdx].cards.pop()
-			} else if (fromType == 'tableau') {
-				card = state.tableau.columns[fromIdx].cards.pop()
-			}
+			let card = state.tableau.columns[fromIdx].cards.pop()
 			if (card) {
 				card.draggable = false
 				state.aces.columns[aceIdx].cards.push(card)
@@ -803,17 +708,31 @@ const autoMoveCard = () => {
 		}
 	}
 }
+
+const updateGame = async () => {
+	const { klondike, moves: Moves, elapsed: Elapsed, status: Status } = state
+	if (!klondike.id) return
+	try {
+		const result = await fetch(`${apiUrl}/api/klondike/${klondike.id}`, {
+			method: 'PATCH',
+			body: JSON.stringify({ Moves, Elapsed, Status }),
+			headers: buildRequestHeaders(blankSession),
+		})
+		if (result.ok) {
+			state.klondike = await result.json()
+		}
+	} catch (error) {
+		console.log(error)
+	}
+}
 </script>
 
 <style lang="postcss">
-div.free-cell-game {
+div.klondike-game {
 	@apply p-2;
 }
 div.header-row {
 	@apply mx-2 flex flex-wrap justify-between mb-2;
-}
-div.buttons button {
-	@apply mr-2;
 }
 div.top-row {
 	@apply flex flex-wrap justify-between mx-2 mb-4;
@@ -825,16 +744,20 @@ div.top-row-left,
 div.top-row-right {
 	@apply flex flex-wrap justify-between;
 }
-div.top-row-left div.free-cell {
-	@apply mr-4;
-}
 div.top-row-right div.ace-cell {
 	@apply ml-4;
 }
 div.tableau,
-div.free-cell,
+div.stock,
+div.waste,
 div.ace-cell {
 	@apply w-28 h-36 p-0 border border-dashed border-black rounded text-center relative;
+}
+div.stock {
+	@apply mr-4;
+}
+div.stock img.playing-card-img {
+	@apply cursor-pointer;
 }
 div.over {
 	border: dashed red !important;

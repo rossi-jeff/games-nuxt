@@ -38,12 +38,16 @@ const alt = computed(() => {
 		: `${card.face} of ${card.suit}`
 })
 const id = `${props.from}_${props.level}_${props.card ? props.card.id : '_'}`
+let timeout: ReturnType<typeof setTimeout> | undefined
 const emit = defineEmits(['click', 'dragStart'])
 
 const onClick = () => {
 	const { card } = props
 	if (!card || !card.clickable || !id) return
-	emit('click', { id: id })
+	if (timeout) clearTimeout(timeout)
+	timeout = setTimeout(() => {
+		emit('click', { id: id })
+	}, 100)
 }
 
 const onDragStart = (ev: any) => {
