@@ -11,24 +11,7 @@ import { FreeCell } from "../../utils/types/free-cell.type";
 
 let Items: FreeCell[] = reactive([]);
 let state = reactive({ Items, Count: 0, Limit: 10, Offset: 0 });
+const path = "/api/free_cell";
 
-const loadScores = async () => {
-  const { Offset, Limit } = state;
-  const path = "/api/free_cell";
-  const params: { [key: string]: number } = { Offset, Limit };
-  const url = new URL(path, apiUrl);
-  for (const key in params) {
-    url.searchParams.append(key, params[key].toString());
-  }
-  try {
-    const result = await fetch(url);
-    if (result.ok) {
-      state = await result.json();
-    }
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-await loadScores();
+state = await loadScores(path, state.Offset, state.Limit)
 </script>

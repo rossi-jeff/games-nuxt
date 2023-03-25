@@ -1,7 +1,10 @@
 <template>
 	<div class="code-breaker-game">
 		<!-- code breaker guess list-->
-		<CodeBreakerGuessList :guesses="state.code_breaker.guesses" v-if="state.code_breaker.guesses && state.code_breaker.guesses.length > 0" />
+		<CodeBreakerGuessList
+			:guesses="state.code_breaker.guesses"
+			v-if="state.code_breaker.guesses && state.code_breaker.guesses.length > 0"
+		/>
 		<!-- guess form -->
 		<CodeBreakerGuessForm
 			v-if="state.status && state.status == GameStatus.Playing"
@@ -14,6 +17,10 @@
 			v-if="!state.status || state.status != GameStatus.Playing"
 			@start-game="newGame"
 		/>
+		<!-- scores link -->
+		<div class="scores-link">
+			<NuxtLink to="/codebreaker/scores">See Top Scores</NuxtLink>
+		</div>
 	</div>
 </template>
 
