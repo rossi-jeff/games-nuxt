@@ -1,16 +1,17 @@
 <template>
-	<div class="klondike-scores">
+	<div class="code-breaker-scores">
 		<div v-if="state.Items && state.Items.length > 0">
-			<KlondikeScoresList :items="state.Items" />
+			<CodeBreakeerScoresList :items="state.Items" />
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { Klondike } from '../../utils/types/klondike.type'
-let Items: Klondike[] = reactive([])
+import { CodeBreaker } from '../../utils/types/code-breaker.type'
+
+let Items: CodeBreaker[] = reactive([])
 let state = reactive({ Items, Count: 0, Limit: 10, Offset: 0 })
-const path = '/api/klondike'
+const path = '/api/code_breaker'
 
 state = await loadScores(path, state.Offset, state.Limit)
 </script>
