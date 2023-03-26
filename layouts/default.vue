@@ -6,6 +6,7 @@
 			<NuxtLink to="/freecell">Free Cell</NuxtLink>
 			<NuxtLink to="/klondike">Klondike</NuxtLink>
 			<NuxtLink to="/codebreaker">Code Breaker</NuxtLink>
+			<NuxtLink to="/guessword">Guess Word</NuxtLink>
 		</div>
 		<slot />
 	</div>

@@ -61,7 +61,7 @@ const startGame = () => {
 
 <style lang="postcss">
 div.code-breaker-game-options {
-	@apply border border-black rounded p-2 mx-2 my-11;
+	@apply border border-black rounded p-2 mx-2 my-1;
 }
 div.cb-options-form {
 	@apply flex flex-wrap justify-between mx-2;
