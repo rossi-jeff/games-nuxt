@@ -1,27 +1,27 @@
 <template>
 	<div class="guess-word-game">
 		<!-- guess list -->
-		<GuessWordGuessList 
-			:guesses="state.guess_word.guesses" 
-			v-if="state.guess_word.guesses && state.guess_word.guesses.length" 
+		<GuessWordGuessList
+			:guesses="state.guess_word.guesses"
+			v-if="state.guess_word.guesses && state.guess_word.guesses.length"
 		/>
 		<!-- guess form -->
-		<GuessWordGuessForm 
-			:length="state.Length" 
-			v-if="state.status == GameStatus.Playing" 
-			@send-guess="sendGuess" 
+		<GuessWordGuessForm
+			:length="state.Length"
+			v-if="state.status == GameStatus.Playing"
+			@send-guess="sendGuess"
 		/>
 		<!-- hint list -->
-		<GuessWordHintList 
-			:hints="state.hints" 
-			:show-hints="state.showHints" 
-			v-if="state.status == GameStatus.Playing" 
-			@toggle-show="toggleHints" 
+		<GuessWordHintList
+			:hints="state.hints"
+			:show-hints="state.showHints"
+			v-if="state.status == GameStatus.Playing"
+			@toggle-show="toggleHints"
 		/>
 		<!-- game options -->
-		<GuessWordGameOptions 
-			@start-game="reandomWord" 
-			v-if="state.status != GameStatus.Playing" 
+		<GuessWordGameOptions
+			@start-game="reandomWord"
+			v-if="state.status != GameStatus.Playing"
 		/>
 		<!-- scores link -->
 		<div class="scores-link">
@@ -31,30 +31,39 @@
 </template>
 
 <script lang="ts" setup>
-import { GameStatus } from '~~/utils/enum/game-status.enum';
-import { Rating } from '~~/utils/enum/rating.enum';
-import { GuessWordGuess } from '~~/utils/types/guess-word-guess.type';
-import { GuessWord } from '~~/utils/types/guess-word.type';
-import { Word } from '~~/utils/types/word.type';
+import { GameStatus } from '~~/utils/enum/game-status.enum'
+import { Rating } from '~~/utils/enum/rating.enum'
+import { GuessWordGuess } from '~~/utils/types/guess-word-guess.type'
+import { GuessWord } from '~~/utils/types/guess-word.type'
+import { Word } from '~~/utils/types/word.type'
 
 let status: GameStatus | undefined
 let guess_word: GuessWord = {}
 let guess_word_guess: GuessWordGuess = {}
 let word: Word = {}
 type HintArgsType = {
-	Length: number;
-	Green: string[];
-	Gray: string[];
-	Brown: string[][];
+	Length: number
+	Green: string[]
+	Gray: string[]
+	Brown: string[][]
 }
 let hintArgs: HintArgsType = {
 	Length: 5,
 	Green: [],
 	Gray: [],
-	Brown: []
+	Brown: [],
 }
 let hints: string[] = []
-const state = reactive({ status, Length: 5, guess_word, guess_word_guess, word, hintArgs, showHints: false, hints })
+const state = reactive({
+	status,
+	Length: 5,
+	guess_word,
+	guess_word_guess,
+	word,
+	hintArgs,
+	showHints: false,
+	hints,
+})
 
 const reandomWord = async (event: any) => {
 	const { Length } = event
@@ -64,8 +73,8 @@ const reandomWord = async (event: any) => {
 		const result = await fetch(`${apiUrl}/api/word/random`, {
 			method: 'POST',
 			body: JSON.stringify({ Length }),
-			headers: buildRequestHeaders(blankSession)
-		});
+			headers: buildRequestHeaders(blankSession),
+		})
 		if (result.ok) {
 			state.word = await result.json()
 			if (state.word.id) newGame(state.word.id)
@@ -80,14 +89,14 @@ const newGame = async (WordId: number) => {
 		const result = await fetch(`${apiUrl}/api/guess_word`, {
 			method: 'POST',
 			body: JSON.stringify({ WordId }),
-			headers: buildRequestHeaders(blankSession)
-		});
+			headers: buildRequestHeaders(blankSession),
+		})
 		if (result.ok) {
 			state.guess_word = await result.json()
 			state.status = state.guess_word.Status
 		}
 	} catch (error) {
-		console.log(error);
+		console.log(error)
 	}
 }
 
@@ -97,20 +106,22 @@ const sendGuess = async (event: any) => {
 	const { Word } = state.word
 	if (!guess_word.id || !Word) return
 	try {
-		const result = await fetch(`${apiUrl}/api/guess_word/${guess_word.id}/guess`, {
-			method: 'POST',
-			body: JSON.stringify({ Guess, Word }),
-			headers: buildRequestHeaders(blankSession)
-		});
+		const result = await fetch(
+			`${apiUrl}/api/guess_word/${guess_word.id}/guess`,
+			{
+				method: 'POST',
+				body: JSON.stringify({ Guess, Word }),
+				headers: buildRequestHeaders(blankSession),
+			}
+		)
 		if (result.ok) {
 			state.guess_word_guess = await result.json()
 			reloadGame()
 		} else {
-			console.log(result);
-			
+			console.log(result)
 		}
 	} catch (error) {
-		console.log(error);
+		console.log(error)
 	}
 }
 
@@ -118,16 +129,15 @@ const reloadGame = async () => {
 	const { guess_word } = state
 	if (!guess_word.id) return
 	try {
-		const result = await fetch(`${apiUrl}/api/guess_word/${guess_word.id}`);
+		const result = await fetch(`${apiUrl}/api/guess_word/${guess_word.id}`)
 		if (result.ok) {
 			state.guess_word = await result.json()
 			buildHintArgs()
 			if (state.showHints) getHints()
 		}
 	} catch (error) {
-		console.log(error);
+		console.log(error)
 	}
-
 }
 
 const buildHintArgs = () => {
@@ -162,7 +172,7 @@ const buildHintArgs = () => {
 }
 
 const toggleHints = (event: any) => {
-	console.log(event);
+	console.log(event)
 	state.showHints = event.show
 }
 
@@ -172,13 +182,13 @@ const getHints = async () => {
 		const result = await fetch(`${apiUrl}/api/guess_word/hint`, {
 			method: 'POST',
 			body: JSON.stringify(hintArgs),
-			headers: buildRequestHeaders(blankSession)
-		});
+			headers: buildRequestHeaders(blankSession),
+		})
 		if (result.ok) {
 			state.hints = await result.json()
 		}
 	} catch (error) {
-		console.log(error);
+		console.log(error)
 	}
 }
 </script>
