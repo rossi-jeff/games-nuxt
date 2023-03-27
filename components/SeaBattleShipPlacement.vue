@@ -105,17 +105,16 @@
 </template>
 
 <script lang="ts" setup>
+import { SeaBattleMaxAxis } from '../utils/sea-battle-max-axis';
 import {
 	ShipDirections,
 	ShipType,
 	ShipTypeLength,
 } from '../utils/enum/ship-type.enum'
+import { PointType } from '~~/utils/types/point-type.type';
 const props = defineProps(['axis', 'shipsToPlace'])
 
-type PointType = {
-	Horizontal?: string
-	Vertical?: number
-}
+
 type PlaceShipArgs = {
 	Type: ShipType
 	Size: number
