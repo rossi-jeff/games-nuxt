@@ -3,7 +3,7 @@ export enum ShipType {
 	Carrier = 'Carrier',
 	Cruiser = 'Cruiser',
 	PatrolBoat = 'PatrolBoat',
-	SubMarine = 'SubMarine'
+	SubMarine = 'SubMarine',
 }
 
 export const ShipTypeLength: { [key: string]: number } = {
@@ -11,7 +11,15 @@ export const ShipTypeLength: { [key: string]: number } = {
 	Carrier: 5,
 	Cruiser: 3,
 	PatrolBoat: 2,
-	SubMarine: 3
-};
+	SubMarine: 3,
+}
 
-export const ShipDirections = ['right', 'down', 'left', 'up'];
+export const ShipTypeValue: { [key: string]: ShipType } = {
+	BattleShip: ShipType.BattleShip,
+	Carrier: ShipType.Carrier,
+	Cruiser: ShipType.Cruiser,
+	PatrolBoat: ShipType.PatrolBoat,
+	SubMarine: ShipType.SubMarine,
+}
+
+export const ShipDirections = ['right', 'down', 'left', 'up']

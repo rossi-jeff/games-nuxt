@@ -105,15 +105,14 @@
 </template>
 
 <script lang="ts" setup>
-import { SeaBattleMaxAxis } from '../utils/sea-battle-max-axis';
+import { SeaBattleMaxAxis } from '../utils/sea-battle-max-axis'
 import {
 	ShipDirections,
 	ShipType,
 	ShipTypeLength,
 } from '../utils/enum/ship-type.enum'
-import { PointType } from '~~/utils/types/point-type.type';
+import { PointType } from '~~/utils/types/point-type.type'
 const props = defineProps(['axis', 'shipsToPlace'])
-
 
 type PlaceShipArgs = {
 	Type: ShipType
@@ -229,6 +228,8 @@ const placeShip = () => {
 	const { ship } = state
 	emit('placeShip', { ship })
 }
+
+setTimeout(() => highLightShip(), 100)
 </script>
 
 <style lang="postcss">

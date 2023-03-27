@@ -13,7 +13,7 @@
 				</option>
 			</select>
 		</div>
-		<div class="ship-type" v-for="shipType of shipTypes" :key="shipType">
+		<div class="ship-type-div" v-for="shipType of shipTypes" :key="shipType">
 			<label for="`ship-type-${shipType}`">{{ shipType }}</label>
 			<select
 				name="`ship-type-${shipType}`"
@@ -80,7 +80,7 @@ label {
 	@apply mr-2 font-bold w-24 inline-block;
 }
 div.axis-select-div,
-div.ship-type {
+div.ship-type-div {
 	@apply mb-2;
 }
 </style>
