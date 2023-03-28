@@ -8,6 +8,7 @@
 			<NuxtLink to="/codebreaker">Code Breaker</NuxtLink>
 			<NuxtLink to="/guessword">Guess Word</NuxtLink>
 			<NuxtLink to="/seabattle">Sea Battle</NuxtLink>
+			<NuxtLink to="/hangman">Hang Man</NuxtLink>
 		</div>
 		<slot />
 	</div>
