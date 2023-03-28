@@ -39,7 +39,7 @@ const guessLetter = (Letter: string) => {
 
 <style lang="postcss">
 div.hang-man-letter-buttons {
-	@apply flex flex-wrap;
+	@apply flex flex-wrap mx-2;
 }
 div.hang-man-letter-buttons button {
 	@apply mr-2 mb-2;

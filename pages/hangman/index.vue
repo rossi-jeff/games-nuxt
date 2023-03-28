@@ -1,5 +1,7 @@
 <template>
 	<div class="hang-man-game">
+		<!-- hang man image -->
+		<HangManImage :wrong="state.hang_man.Wrong" />
 		<!-- word display-->
 		<HangManWordDisplay
 			:display="state.Display"
@@ -11,6 +13,11 @@
 			:wrong="state.hang_man.Wrong"
 			v-if="state.status == GameStatus.Playing"
 			@guess-letter="guessLetter"
+		/>
+		<!-- lost word display-->
+		<HangManLost
+			v-if="state.status == GameStatus.Lost && state.word"
+			:word="state.word"
 		/>
 		<!-- game options -->
 		<HangManGameOptions
@@ -42,6 +49,7 @@ const randomWord = async (event: any) => {
 	const { Min, Max } = event
 	state.Min = Min
 	state.Max = Max
+	state.status = undefined
 	try {
 		const result = await fetch(`${apiUrl}/api/word/random`, {
 			method: 'POST',
