@@ -1,5 +1,12 @@
 <template>
 	<div class="ten-grand-game">
+		<!-- turn form -->
+		<TenGrandTurnForm 
+			:ten-grand="state.ten_grand" 
+			:ten-grand-turn="state.ten_grand_turn" 
+			v-if="state.status == GameStatus.Playing" 
+			@score-options="scoreOptions"
+		/>
 		<!-- new game button-->
 		<div class="mx-2" v-if="state.status != GameStatus.Playing">
 			<button @click="newGame">New Game</button>
@@ -8,6 +15,7 @@
 		<div class="scores-link">
 			<NuxtLink to="/tengrand/scores">See Top Scores</NuxtLink>
 		</div>
+		<div>{{ state }}</div>
 	</div>
 </template>
 
@@ -52,5 +60,10 @@ const reloadGame = async () => {
 
 const scoreOptions = async (event: any) => {
 	console.log(event)
+	try {
+		reloadGame()
+	} catch (error) {
+		console.log(error)
+	}
 }
 </script>
