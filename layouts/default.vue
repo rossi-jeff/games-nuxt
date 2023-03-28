@@ -7,6 +7,7 @@
 			<NuxtLink to="/klondike">Klondike</NuxtLink>
 			<NuxtLink to="/codebreaker">Code Breaker</NuxtLink>
 			<NuxtLink to="/guessword">Guess Word</NuxtLink>
+			<NuxtLink to="/seabattle">Sea Battle</NuxtLink>
 		</div>
 		<slot />
 	</div>
