@@ -1,5 +1,19 @@
 <template>
 	<div class="ten-grand-turn-form">
+		<div class="stats-row">
+			<div>
+				<strong>Turns</strong>
+				{{ props.tenGrand.turns ? props.tenGrand.turns.length : 0 }}
+			</div>
+			<div>
+				<strong>Status</strong>
+				{{ props.tenGrand.Status }}
+			</div>
+			<div>
+				<strong>Score</strong>
+				{{ props.tenGrand.Score }}
+			</div>
+		</div>
 		<div class="dice-row">
 			<div class="dice-container">
 				<h2>Roll</h2>
@@ -242,6 +256,9 @@ div.turn-border {
 }
 div.dice-row {
 	@apply flex flex-wrap;
+}
+div.stats-row {
+	@apply flex flex-wrap justify-between;
 }
 div.roll-dice,
 div.score-dice {
