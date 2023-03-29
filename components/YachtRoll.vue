@@ -3,7 +3,7 @@
 		<h2>{{ props.title }}</h2>
 		<div class="die-container">
 			<div v-for="(face, index) of dice" :key="index" class="roll-die">
-				<LargeDie :face="face" :index="index" />
+				<LargeDie :face="face" :index="index" :draggable="false" />
 				<input
 					type="checkbox"
 					:value="index"
