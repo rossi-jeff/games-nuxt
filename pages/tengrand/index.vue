@@ -1,21 +1,27 @@
 <template>
 	<div class="ten-grand-game">
 		<!-- turn form -->
-		<TenGrandTurnForm 
-			:ten-grand="state.ten_grand" 
-			:ten-grand-turn="state.ten_grand_turn" 
-			v-if="state.status == GameStatus.Playing" 
+		<TenGrandTurnForm
+			:ten-grand="state.ten_grand"
+			:ten-grand-turn="state.ten_grand_turn"
+			v-if="state.status == GameStatus.Playing"
 			@score-options="scoreOptions"
 		/>
 		<!-- new game button-->
 		<div class="mx-2" v-if="state.status != GameStatus.Playing">
 			<button @click="newGame">New Game</button>
 		</div>
+		<!-- turn list -->
+		<TenGrandTurnList
+			:turns="state.ten_grand.turns"
+			v-if="
+				state.ten_grand && state.ten_grand.turns && state.ten_grand.turns.length
+			"
+		/>
 		<!-- scores link -->
 		<div class="scores-link">
 			<NuxtLink to="/tengrand/scores">See Top Scores</NuxtLink>
 		</div>
-		<div>{{ state }}</div>
 	</div>
 </template>
 
@@ -59,9 +65,22 @@ const reloadGame = async () => {
 }
 
 const scoreOptions = async (event: any) => {
-	console.log(event)
+	const { ten_grand } = state
+	if (!ten_grand.id) return
+	const { TurnId, Dice, Options } = event
 	try {
-		reloadGame()
+		const result = await fetch(
+			`${apiUrl}/api/ten_grand/${ten_grand.id}/score`,
+			{
+				method: 'POST',
+				body: JSON.stringify({ TurnId, Dice, Options }),
+				headers: buildRequestHeaders(blankSession),
+			}
+		)
+		if (result.ok) {
+			state.ten_grand_turn = await result.json()
+			reloadGame()
+		}
 	} catch (error) {
 		console.log(error)
 	}

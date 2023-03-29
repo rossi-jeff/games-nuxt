@@ -3,16 +3,16 @@
 		<div class="dice-row">
 			<div class="dice-container">
 				<h2>Roll</h2>
-				<div 
-					class="roll-dice" 
-					@dragover="dragOver" 
-					@dragenter="dragEnter" 
+				<div
+					class="roll-dice"
+					@dragover="dragOver"
+					@dragenter="dragEnter"
 					@drop="drop"
 				>
-					<LargeDie 
-						v-for="(face,index) of state.rollDice" 
-						:key="index" 
-						:face="face" 
+					<LargeDie
+						v-for="(face, index) of state.rollDice"
+						:key="index"
+						:face="face"
 						:index="index"
 						:draggable="true"
 						from="roll"
@@ -22,16 +22,16 @@
 			</div>
 			<div class="dice-container">
 				<h2>Score</h2>
-				<div 
-					class="score-dice" 
-					@dragover="dragOver" 
-					@dragenter="dragEnter" 
+				<div
+					class="score-dice"
+					@dragover="dragOver"
+					@dragenter="dragEnter"
 					@drop="drop"
 				>
-					<LargeDie 
-						v-for="(face,index) of state.scoreDice" 
-						:key="index" 
-						:face="face" 
+					<LargeDie
+						v-for="(face, index) of state.scoreDice"
+						:key="index"
+						:face="face"
 						:index="index"
 						:draggable="true"
 						from="score"
@@ -42,36 +42,43 @@
 		</div>
 		<div class="controls-row">
 			<div v-if="state.options.length">
-				<div class="option-row" v-for="(option,index) of state.options" :key="index">
+				<div
+					class="option-row"
+					v-for="(option, index) of state.options"
+					:key="index"
+				>
 					<div>
-						<input 
-							type="checkbox" 
-							:value="index" 
-							v-model="state.cb" 
-							@change="setSelectedOptions" 
+						<input
+							type="checkbox"
+							:value="index"
+							v-model="state.cb"
+							@change="setSelectedOptions"
 						/>
 					</div>
 					<div class="category">{{ option.Category }}</div>
 					<div class="score">{{ option.Score }}</div>
 				</div>
 				<div class="mx-2">
-					<button v-show="state.selected.Options.length">Score Options</button>
+					<button v-show="state.selected.Options.length" @click="scoreOptions">
+						Score Options
+					</button>
 				</div>
 			</div>
 			<div v-else>
 				<button @click="roll">Roll</button>
 			</div>
 		</div>
-		
-		<div>{{ props }}</div>
-		<div>{{ state }}</div>
+		<div class="turn-border" v-if="state.currentTurn.id">
+			<TenGrandTurnDisplay :turn="state.currentTurn" />
+		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { TenGrandOption } from '../utils/types/ten-grand-option.type';
+import { TenGrandOption } from '../utils/types/ten-grand-option.type'
+import { TenGrandTurn } from '../utils/types/ten-grand-turn.type'
 
-const props = defineProps(['tenGrand','tenGrandTurn'])
+const props = defineProps(['tenGrand', 'tenGrandTurn'])
 let rollDice: number[] = []
 let scoreDice: number[] = []
 let options: TenGrandOption[] = []
@@ -81,12 +88,20 @@ type SelectedType = {
 	Options: TenGrandOption[]
 }
 let selected: SelectedType = {
-	TurnId: props.tenGrandTurn.id || 0,
+	TurnId: 0,
 	Dice: [],
-	Options: []
+	Options: [],
 }
 let cb: number[] = []
-const state = reactive({ rollDice, scoreDice, options, selected, cb })
+let currentTurn: TenGrandTurn = {}
+const state = reactive({
+	rollDice,
+	scoreDice,
+	options,
+	selected,
+	cb,
+	currentTurn,
+})
 const emit = defineEmits(['scoreOptions'])
 
 const roll = async () => {
@@ -97,7 +112,7 @@ const roll = async () => {
 		const result = await fetch(`${apiUrl}/api/ten_grand/${tenGrand.id}/roll`, {
 			method: 'POST',
 			body: JSON.stringify({ Quantity }),
-			headers: buildRequestHeaders(blankSession)
+			headers: buildRequestHeaders(blankSession),
 		})
 		if (result.ok) {
 			state.rollDice = await result.json()
@@ -114,7 +129,7 @@ const getOptions = async () => {
 		const result = await fetch(`${apiUrl}/api/ten_grand/options`, {
 			method: 'POST',
 			body: JSON.stringify({ Dice }),
-			headers: buildRequestHeaders(blankSession)
+			headers: buildRequestHeaders(blankSession),
 		})
 		if (result.ok) {
 			const { Options } = await result.json()
@@ -126,25 +141,29 @@ const getOptions = async () => {
 }
 
 const dragStart = (event: any) => {
-	if (event.target) event.dataTransfer.setData('text', event.target.id);
-	else if (event.detail) event.detail.dataTransfer.setData('text', event.detail.target.id);
-};
+	if (event.target) event.dataTransfer.setData('text', event.target.id)
+	else if (event.detail)
+		event.detail.dataTransfer.setData('text', event.detail.target.id)
+}
 
 const dragOver = (event: any) => {
-	event.preventDefault();
-};
+	event.preventDefault()
+}
 
 const dragEnter = (event: any) => {
 	let { target } = event
 	if (target) {
 		while (
-			target && 
-			!(target.classList.contains('roll-dice') || target.classList.contains('score-dice')) 
+			target &&
+			!(
+				target.classList.contains('roll-dice') ||
+				target.classList.contains('score-dice')
+			)
 		) {
 			target = target.parentElement
 		}
 		target.classList.add('over')
-		setTimeout(() => target.classList.remove('over'),500)
+		setTimeout(() => target.classList.remove('over'), 500)
 	}
 }
 
@@ -157,43 +176,81 @@ const setSelectedOptions = () => {
 }
 
 const drop = (event: any) => {
-	event.preventDefault();
-	event.stopPropagation();
-	const data = event.dataTransfer.getData('text');
-	let [face,idx,from] = data.split('-')
+	event.preventDefault()
+	event.stopPropagation()
+	const data = event.dataTransfer.getData('text')
+	let [face, idx, from] = data.split('-')
 	idx = parseInt(idx)
 	face = parseInt(face)
-	let { target } = event;
+	let { target } = event
 	while (
 		target &&
-		!(target.classList.contains('roll-dice') || target.classList.contains('score-dice'))
+		!(
+			target.classList.contains('roll-dice') ||
+			target.classList.contains('score-dice')
+		)
 	) {
-		target = target.parentElement;
+		target = target.parentElement
 	}
 	if (target.classList.contains('roll-dice')) {
 		if (from == 'roll') return
 		state.rollDice.push(face)
-		state.scoreDice.splice(idx,1)
+		state.scoreDice.splice(idx, 1)
 	} else {
 		if (from == 'score') return
 		state.scoreDice.push(face)
-		state.rollDice.splice(idx,1)
+		state.rollDice.splice(idx, 1)
 	}
 	getOptions()
 }
+
+const scoreOptions = () => {
+	let { selected } = state
+	selected.TurnId = state.currentTurn.id || 0
+	selected.Dice = [...state.scoreDice]
+	let crapOut = false
+	for (const opt of selected.Options)
+		if (opt.Category == 'CrapOut') crapOut = true
+	if (crapOut) {
+		selected.Dice = [...state.scoreDice, ...state.rollDice]
+		state.rollDice = []
+	}
+	state.scoreDice = []
+	state.cb = []
+	emit('scoreOptions', selected)
+	state.options = []
+}
+
+watch(
+	() => props.tenGrandTurn,
+	async () => {
+		if (!state.rollDice.length) {
+			state.currentTurn = {}
+		} else {
+			state.currentTurn = props.tenGrandTurn
+		}
+	}
+)
 </script>
 
 <style lang="postcss">
-	div.dice-row {
-		@apply flex flex-wrap;
-	}
-	div.roll-dice, div.score-dice {
-		@apply flex flex-wrap h-20 min-w-[10rem] max-w-fit border border-dashed border-black rounded p-2 mx-1 my-1;
-	}
-	div.die-wrapper {
-		@apply cursor-move;
-	}
-	div.option-row {
-		@apply flex flex-wrap mx-2;
-	}
+div.ten-grand-turn-form {
+	@apply mx-2 mb-2 border border-black rounded p-2;
+}
+div.turn-border {
+	@apply mb-2 border border-black rounded p-2;
+}
+div.dice-row {
+	@apply flex flex-wrap;
+}
+div.roll-dice,
+div.score-dice {
+	@apply flex flex-wrap h-20 min-w-[10rem] max-w-fit border border-dashed border-black rounded p-2 mx-1 my-1;
+}
+div.die-wrapper {
+	@apply cursor-move;
+}
+div.option-row {
+	@apply flex flex-wrap mx-2;
+}
 </style>
