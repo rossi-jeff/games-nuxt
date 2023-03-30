@@ -48,6 +48,7 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { GameStatus } from '~~/utils/enum/game-status.enum'
 import { Concentration } from '../../utils/types/concentration.type'
 
@@ -60,6 +61,9 @@ let interval: ReturnType<typeof setInterval> | undefined
 let start: number
 let concentration: Concentration = {}
 
+const sessionStore = useSessionStore()
+const { session } = storeToRefs(sessionStore)
+
 const state = reactive({
 	deck,
 	status,
@@ -69,6 +73,7 @@ const state = reactive({
 	moves: 0,
 	elapsed: 0,
 	concentration,
+	session,
 })
 
 const deal = () => {
@@ -93,7 +98,7 @@ const newGame = async () => {
 	try {
 		const result = await fetch(`${apiUrl}/api/concentration`, {
 			method: 'POST',
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.concentration = await result.json()
@@ -119,7 +124,7 @@ const updateGame = async () => {
 			{
 				method: 'PATCH',
 				body: JSON.stringify({ Elapsed, Moves, Status }),
-				headers: buildRequestHeaders(blankSession),
+				headers: buildRequestHeaders(state.session),
 			}
 		)
 		if (result.ok) {

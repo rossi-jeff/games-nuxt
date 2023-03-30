@@ -26,6 +26,7 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { GameStatus } from '../../utils/enum/game-status.enum'
 import { TenGrandTurn } from '../../utils/types/ten-grand-turn.type'
 import { TenGrand } from '../../utils/types/ten-grand.type'
@@ -33,13 +34,17 @@ import { TenGrand } from '../../utils/types/ten-grand.type'
 let status: GameStatus | undefined
 let ten_grand: TenGrand = {}
 let ten_grand_turn: TenGrandTurn = {}
-const state = reactive({ status, ten_grand, ten_grand_turn })
+
+const sessionStore = useSessionStore()
+const { session } = storeToRefs(sessionStore)
+
+const state = reactive({ status, ten_grand, ten_grand_turn, session })
 
 const newGame = async () => {
 	try {
 		const result = await fetch(`${apiUrl}/api/ten_grand`, {
 			method: 'POST',
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.ten_grand = await result.json()
@@ -74,7 +79,7 @@ const scoreOptions = async (event: any) => {
 			{
 				method: 'POST',
 				body: JSON.stringify({ TurnId, Dice, Options }),
-				headers: buildRequestHeaders(blankSession),
+				headers: buildRequestHeaders(state.session),
 			}
 		)
 		if (result.ok) {

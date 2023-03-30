@@ -85,6 +85,7 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { FlagType } from '../../utils/types/flag-type.type'
 import { YachtScoreOption } from '../../utils/types/yacht-score-option.type'
 import { YachtTurn } from '../../utils/types/yacht-turn.type'
@@ -100,13 +101,17 @@ const flags: FlagType = reactive({
 	showTwo: false,
 	showThree: false,
 })
-const state = reactive({ yacht, turn, options, flags })
+
+const sessionStore = useSessionStore()
+const { session } = storeToRefs(sessionStore)
+
+const state = reactive({ yacht, turn, options, flags, session })
 
 const newGame = async () => {
 	try {
 		const result = await fetch(`${apiUrl}/api/yacht`, {
 			method: 'POST',
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.yacht = await result.json()
@@ -123,7 +128,7 @@ const roll = async (Keep: number[] = []) => {
 		const result = await fetch(`${apiUrl}/api/yacht/${yacht.id}/roll`, {
 			method: 'POST',
 			body: JSON.stringify({ Keep }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			const { Turn, Options } = await result.json()
@@ -174,7 +179,7 @@ const scoreTurn = async (ev: any) => {
 		const result = await fetch(`${apiUrl}/api/yacht/${yacht.id}/score`, {
 			method: 'POST',
 			body: JSON.stringify({ TurnId, Category }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			await result.json()
@@ -193,7 +198,7 @@ const reloadGame = async () => {
 	if (!yacht.id) return
 	try {
 		const result = await fetch(`${apiUrl}/api/yacht/${yacht.id}`, {
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.yacht = await result.json()

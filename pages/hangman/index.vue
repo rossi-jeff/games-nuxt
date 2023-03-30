@@ -32,6 +32,7 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { GameStatus } from '../../utils/enum/game-status.enum'
 import { HangMan } from '../../utils/types/hang-man.type'
 import { Word } from '../../utils/types/word.type'
@@ -43,7 +44,20 @@ let Min = 6
 let Max = 12
 let Length = 0
 let Display: string[] = []
-const state = reactive({ word, hang_man, status, Min, Max, Length, Display })
+
+const sessionStore = useSessionStore()
+const { session } = storeToRefs(sessionStore)
+
+const state = reactive({
+	word,
+	hang_man,
+	status,
+	Min,
+	Max,
+	Length,
+	Display,
+	session,
+})
 
 const randomWord = async (event: any) => {
 	const { Min, Max } = event
@@ -54,7 +68,7 @@ const randomWord = async (event: any) => {
 		const result = await fetch(`${apiUrl}/api/word/random`, {
 			method: 'POST',
 			body: JSON.stringify({ Min, Max }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.word = await result.json()
@@ -73,7 +87,7 @@ const newGame = async (WordId: number) => {
 		const result = await fetch(`${apiUrl}/api/hang_man`, {
 			method: 'POST',
 			body: JSON.stringify({ WordId }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.hang_man = await result.json()
@@ -95,7 +109,7 @@ const guessLetter = async (event: any) => {
 		const result = await fetch(`${apiUrl}/api/hang_man/${hang_man.id}/guess`, {
 			method: 'POST',
 			body: JSON.stringify({ Word, Letter: Letter.toLowerCase() }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			const { Found } = await result.json()

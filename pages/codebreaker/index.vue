@@ -25,9 +25,13 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { GameStatus } from '../../utils/enum/game-status.enum'
 import { CodeBreakerGuess } from '../../utils/types/code-breaker-guess.type'
 import { CodeBreaker } from '../../utils/types/code-breaker.type'
+
+const sessionStore = useSessionStore()
+const { session } = storeToRefs(sessionStore)
 
 let code_breaker: CodeBreaker = {}
 let code_breaker_guess: CodeBreakerGuess = {}
@@ -40,6 +44,7 @@ const state = reactive({
 	status,
 	available,
 	columns,
+	session,
 })
 
 const newGame = async (event: any) => {
@@ -50,7 +55,7 @@ const newGame = async (event: any) => {
 		const result = await fetch(`${apiUrl}/api/code_breaker`, {
 			method: 'POST',
 			body: JSON.stringify({ Colors, Columns }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.code_breaker = await result.json()
@@ -71,7 +76,7 @@ const sendGuess = async (event: any) => {
 			{
 				method: 'POST',
 				body: JSON.stringify({ Colors }),
-				headers: buildRequestHeaders(blankSession),
+				headers: buildRequestHeaders(state.session),
 			}
 		)
 		if (result.ok) {

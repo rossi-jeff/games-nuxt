@@ -31,6 +31,7 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { GameStatus } from '~~/utils/enum/game-status.enum'
 import { Rating } from '~~/utils/enum/rating.enum'
 import { GuessWordGuess } from '~~/utils/types/guess-word-guess.type'
@@ -54,6 +55,10 @@ let hintArgs: HintArgsType = {
 	Brown: [],
 }
 let hints: string[] = []
+
+const sessionStore = useSessionStore()
+const { session } = storeToRefs(sessionStore)
+
 const state = reactive({
 	status,
 	Length: 5,
@@ -63,6 +68,7 @@ const state = reactive({
 	hintArgs,
 	showHints: false,
 	hints,
+	session,
 })
 
 const reandomWord = async (event: any) => {
@@ -73,7 +79,7 @@ const reandomWord = async (event: any) => {
 		const result = await fetch(`${apiUrl}/api/word/random`, {
 			method: 'POST',
 			body: JSON.stringify({ Length }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.word = await result.json()
@@ -89,7 +95,7 @@ const newGame = async (WordId: number) => {
 		const result = await fetch(`${apiUrl}/api/guess_word`, {
 			method: 'POST',
 			body: JSON.stringify({ WordId }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.guess_word = await result.json()
@@ -111,7 +117,7 @@ const sendGuess = async (event: any) => {
 			{
 				method: 'POST',
 				body: JSON.stringify({ Guess, Word }),
-				headers: buildRequestHeaders(blankSession),
+				headers: buildRequestHeaders(state.session),
 			}
 		)
 		if (result.ok) {
