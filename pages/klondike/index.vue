@@ -725,6 +725,8 @@ const updateGame = async () => {
 		console.log(error)
 	}
 }
+
+onMounted(() => deck.preload())
 </script>
 
 <style lang="postcss">
