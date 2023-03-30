@@ -803,6 +803,8 @@ const autoMoveCard = () => {
 		}
 	}
 }
+
+onMounted(() => deck.preload())
 </script>
 
 <style lang="postcss">
