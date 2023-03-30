@@ -10,6 +10,7 @@
 			<NuxtLink to="/seabattle">Sea Battle</NuxtLink>
 			<NuxtLink to="/hangman">Hang Man</NuxtLink>
 			<NuxtLink to="/tengrand">Ten Grand</NuxtLink>
+			<NuxtLink to="/concentration">Concentration</NuxtLink>
 		</div>
 		<slot />
 	</div>

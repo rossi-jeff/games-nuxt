@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps(['card', 'from', 'level'])
+const props = defineProps(['card', 'from', 'level', 'index'])
 const src = computed(() => {
 	const { card } = props
 	if (!card) return ''
@@ -37,7 +37,7 @@ const alt = computed(() => {
 		? `card-${from}-${level}`
 		: `${card.face} of ${card.suit}`
 })
-const id = `${props.from}_${props.level}_${props.card ? props.card.id : '_'}`
+const id = `${props.from}_${props.level}_${props.card ? props.card.id : '-'}_${props.index ? props.index : 0}`
 let timeout: ReturnType<typeof setTimeout> | undefined
 const emit = defineEmits(['click', 'dragStart'])
 

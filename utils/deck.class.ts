@@ -91,4 +91,19 @@ export class Deck {
 	color(card: Card) {
 		return this.colors[card.suit]
 	}
+
+	preload() {
+		let images = [];
+		let idx = 0;
+		for (const back of this.backs) {
+			images[idx] = new Image();
+			images[idx].src = `/cards/back/${back}.svg`;
+			idx++;
+		}
+		for (const card of this.cards) {
+			images[idx] = new Image();
+			images[idx].src = card.src;
+			idx++;
+		}
+	}
 }
