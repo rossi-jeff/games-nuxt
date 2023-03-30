@@ -1,17 +1,65 @@
 <template>
-  <div class="free-cell-scores">
-    <div v-if="state.Items && state.Items.length > 0">
-      <FreeCellScoresList :items="state.Items" />
-    </div>
-  </div>
+	<div class="free-cell-scores">
+		<div v-if="state.Items && state.Items.length > 0">
+			<FreeCellScoresList :items="state.Items" />
+		</div>
+		<PaginationControls
+			:count="state.Count"
+			:offset="state.Offset"
+			:limit="state.Limit"
+			@limit-changed="limitChanged"
+			@page-changed="pageChanged"
+		/>
+	</div>
 </template>
 
 <script lang="ts" setup>
-import { FreeCell } from "../../utils/types/free-cell.type";
+import { FreeCell } from '../../utils/types/free-cell.type'
 
-let Items: FreeCell[] = reactive([]);
-let state = reactive({ Items, Count: 0, Limit: 10, Offset: 0 });
-const path = "/api/free_cell";
+let Items: FreeCell[] = reactive([])
+let state = reactive({ Items, Count: 0, Limit: 10, Offset: 0 })
+const path = '/api/free_cell'
 
-state = await loadScores(path, state.Offset, state.Limit)
+const limitChanged = async (event: any) => {
+	const { limit } = event
+	state.Offset = 0
+	state.Limit = limit
+	const { Items, Count, Offset, Limit } = await loadScores(
+		path,
+		state.Offset,
+		state.Limit
+	)
+	state.Items = Items
+	state.Count = Count
+	state.Offset = Offset
+	state.Limit = Limit
+}
+
+const pageChanged = async (event: any) => {
+	const { current } = event
+	state.Offset = (current - 1) * state.Limit
+	const { Items, Count, Offset, Limit } = await loadScores(
+		path,
+		state.Offset,
+		state.Limit
+	)
+	state.Items = Items
+	state.Count = Count
+	state.Offset = Offset
+	state.Limit = Limit
+}
+
+const initialLoad = async () => {
+	const { Items, Count, Offset, Limit } = await loadScores(
+		path,
+		state.Offset,
+		state.Limit
+	)
+	state.Items = Items
+	state.Count = Count
+	state.Offset = Offset
+	state.Limit = Limit
+}
+
+onMounted(() => initialLoad())
 </script>
