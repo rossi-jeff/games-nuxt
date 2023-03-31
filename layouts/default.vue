@@ -12,6 +12,7 @@
 			<NuxtLink to="/tengrand">Ten Grand</NuxtLink>
 			<NuxtLink to="/concentration">Concentration</NuxtLink>
 			<NuxtLink to="/login">Sign In</NuxtLink>
+			<NuxtLink to="/register">Register</NuxtLink>
 		</div>
 		<slot />
 	</div>
