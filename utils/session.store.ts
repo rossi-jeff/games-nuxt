@@ -14,5 +14,13 @@ export const blankSession: SessionData = {
 
 export const useSessionStore = defineStore('session', () => {
 	const session = ref(blankSession)
-	return { session }
+
+	const setSession = (newSession: SessionData) => {
+		session.value = newSession
+	}
+
+	const clearSession = () => {
+		session.value = blankSession
+	}
+	return { session, setSession, clearSession }
 })

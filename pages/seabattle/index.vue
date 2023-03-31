@@ -55,6 +55,7 @@
 
 <script lang="ts" setup>
 import { stat } from 'fs'
+import { storeToRefs } from 'pinia'
 import { Navy } from '~~/utils/enum/navy.enum'
 import { ShipType, ShipTypeValue } from '~~/utils/enum/ship-type.enum'
 import { PointType } from '~~/utils/types/point-type.type'
@@ -83,6 +84,10 @@ let visible: FlagType = {
 	player: true,
 	opponent: true,
 }
+
+const sessionStore = useSessionStore()
+const { session } = storeToRefs(sessionStore)
+
 const state = reactive({
 	Axis,
 	sea_battle,
@@ -97,6 +102,7 @@ const state = reactive({
 	opponentTurns,
 	fired,
 	visible,
+	session,
 })
 
 const toggleMode = () => {
@@ -131,7 +137,7 @@ const newGame = async (Axis: number) => {
 		const result = await fetch(`${apiUrl}/api/sea_battle`, {
 			method: 'POST',
 			body: JSON.stringify({ Axis }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.sea_battle = await result.json()
@@ -210,7 +216,7 @@ const placePlayerShip = async (
 					Navy: Navy.Player,
 					Points: points,
 				}),
-				headers: buildRequestHeaders(blankSession),
+				headers: buildRequestHeaders(state.session),
 			}
 		)
 		if (result.ok) {
@@ -235,7 +241,7 @@ const placeOpponentShip = async (type: ShipType, size: number) => {
 					Size: size,
 					Navy: Navy.Opponent,
 				}),
-				headers: buildRequestHeaders(blankSession),
+				headers: buildRequestHeaders(state.session),
 			}
 		)
 		if (result.ok) {
@@ -257,7 +263,7 @@ const playerFire = async (event: any) => {
 			{
 				method: 'POST',
 				body: JSON.stringify({ Horizontal, Vertical, Navy: Navy.Player }),
-				headers: buildRequestHeaders(blankSession),
+				headers: buildRequestHeaders(state.session),
 			}
 		)
 		if (result.ok) {
@@ -281,7 +287,7 @@ const opponentFire = async () => {
 			{
 				method: 'POST',
 				body: JSON.stringify({ Navy: Navy.Opponent }),
-				headers: buildRequestHeaders(blankSession),
+				headers: buildRequestHeaders(state.session),
 			}
 		)
 		if (result.ok) {

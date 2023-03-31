@@ -229,6 +229,7 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { GameStatus } from '../../utils/enum/game-status.enum'
 import { Klondike } from '../../utils/types/klondike.type'
 
@@ -239,6 +240,10 @@ const stock = new CardHolder(1)
 const waste = new CardHolder(1)
 let klondike: Klondike = {}
 let status: GameStatus | undefined
+
+const sessionStore = useSessionStore()
+const { session } = storeToRefs(sessionStore)
+
 const state = reactive({
 	deck,
 	tableau,
@@ -251,6 +256,7 @@ const state = reactive({
 	elapsed: 0,
 	autocomplete: false,
 	rendered: true,
+	session,
 })
 let timeout: ReturnType<typeof setTimeout> | undefined
 let interval: ReturnType<typeof setInterval> | undefined
@@ -312,7 +318,7 @@ const newGame = async () => {
 	try {
 		const result = await fetch(`${apiUrl}/api/klondike`, {
 			method: 'POST',
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.klondike = await result.json()
@@ -716,7 +722,7 @@ const updateGame = async () => {
 		const result = await fetch(`${apiUrl}/api/klondike/${klondike.id}`, {
 			method: 'PATCH',
 			body: JSON.stringify({ Moves, Elapsed, Status }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.klondike = await result.json()

@@ -289,6 +289,7 @@
 </template>
 
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import { GameStatus } from '../../utils/enum/game-status.enum'
 import { FreeCell } from '../../utils/types/free-cell.type'
 
@@ -298,6 +299,10 @@ const aces = new CardHolder(4)
 const free = new CardHolder(4)
 let status: GameStatus | undefined
 let free_cell: FreeCell = {}
+
+const sessionStore = useSessionStore()
+const { session } = storeToRefs(sessionStore)
+
 const state = reactive({
 	deck,
 	tableau,
@@ -308,6 +313,7 @@ const state = reactive({
 	moves: 0,
 	elapsed: 0,
 	autocomplete: false,
+	session,
 })
 let timeout: ReturnType<typeof setTimeout> | undefined
 let interval: ReturnType<typeof setInterval> | undefined
@@ -355,7 +361,7 @@ const newGame = async () => {
 	try {
 		const result = await fetch(`${apiUrl}/api/free_cell`, {
 			method: 'POST',
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.free_cell = await result.json()
@@ -373,7 +379,7 @@ const updateGame = async () => {
 		const result = await fetch(`${apiUrl}/api/free_cell/${free_cell.id}`, {
 			method: 'PATCH',
 			body: JSON.stringify({ Moves, Elapsed, Status }),
-			headers: buildRequestHeaders(blankSession),
+			headers: buildRequestHeaders(state.session),
 		})
 		if (result.ok) {
 			state.free_cell = await result.json()
