@@ -17,6 +17,13 @@
 			v-if="!state.status || state.status != GameStatus.Playing"
 			@start-game="newGame"
 		/>
+		<!-- in progress -->
+		<CodeBreakeerScoresList
+			:items="state.inProgress"
+			label="Continue"
+			v-if="state.session.SignedIn && state.status != GameStatus.Playing"
+			@follow-link="continueGame"
+		/>
 		<!-- scores link -->
 		<div class="scores-link">
 			<NuxtLink to="/codebreaker/scores">See Top Scores</NuxtLink>
@@ -38,6 +45,7 @@ let code_breaker_guess: CodeBreakerGuess = {}
 let status: GameStatus | undefined
 let available: string[] = []
 let columns = 4
+let inProgress: CodeBreaker[] = []
 const state = reactive({
 	code_breaker,
 	code_breaker_guess,
@@ -45,6 +53,7 @@ const state = reactive({
 	available,
 	columns,
 	session,
+	inProgress,
 })
 
 const newGame = async (event: any) => {
@@ -96,9 +105,35 @@ const reloadGame = async () => {
 		if (result.ok) {
 			state.code_breaker = await result.json()
 			state.status = state.code_breaker.Status
+			if (state.status != GameStatus.Playing) getInProgress()
+			if (state.available.length == 0 && state.code_breaker.Available)
+				state.available = state.code_breaker.Available.split(',')
+			if (state.code_breaker.Columns) state.columns = state.code_breaker.Columns
 		}
 	} catch (error) {
 		console.log(error)
 	}
 }
+
+const getInProgress = async () => {
+	if (!state.session.SignedIn) return
+	try {
+		const result = await fetch(`${apiUrl}/api/code_breaker/progress`, {
+			headers: buildRequestHeaders(state.session),
+		})
+		if (result.ok) {
+			state.inProgress = await result.json()
+		}
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const continueGame = (event: any) => {
+	const { id } = event
+	state.code_breaker.id = id
+	reloadGame()
+}
+
+onMounted(() => getInProgress())
 </script>
