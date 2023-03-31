@@ -1,5 +1,9 @@
 <template>
 	<div class="code-breaker-detail">
+		<!-- back link -->
+		<NuxtLink to="/codebreaker/scores" class="mx-2 mb-2"
+			>Back to Scores</NuxtLink
+		>
 		<!-- code breaker guess list-->
 		<CodeBreakerGuessList
 			:guesses="state.code_breaker.guesses"

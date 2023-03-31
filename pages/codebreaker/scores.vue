@@ -3,7 +3,7 @@
 		<div v-if="state.Items && state.Items.length > 0">
 			<CodeBreakeerScoresList
 				:items="state.Items"
-				label="view"
+				label="View"
 				@follow-link="followLink"
 			/>
 		</div>
