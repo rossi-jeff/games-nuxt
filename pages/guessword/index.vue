@@ -23,6 +23,13 @@
 			@start-game="reandomWord"
 			v-if="state.status != GameStatus.Playing"
 		/>
+		<!-- in progress -->
+		<GuessWordScoresList
+			:items="state.inProgress"
+			label="Continue"
+			v-if="state.session.SignedIn && state.status != GameStatus.Playing"
+			@follow-link="continueGame"
+		/>
 		<!-- scores link -->
 		<div class="scores-link">
 			<NuxtLink to="/guessword/scores">See Top Scores</NuxtLink>
@@ -55,6 +62,7 @@ let hintArgs: HintArgsType = {
 	Brown: [],
 }
 let hints: string[] = []
+let inProgress: GuessWord[] = []
 
 const sessionStore = useSessionStore()
 const { session } = storeToRefs(sessionStore)
@@ -69,6 +77,7 @@ const state = reactive({
 	showHints: false,
 	hints,
 	session,
+	inProgress,
 })
 
 const reandomWord = async (event: any) => {
@@ -138,6 +147,10 @@ const reloadGame = async () => {
 		const result = await fetch(`${apiUrl}/api/guess_word/${guess_word.id}`)
 		if (result.ok) {
 			state.guess_word = await result.json()
+			if (state.guess_word.word) state.word = state.guess_word.word
+			if (state.word.Length) state.Length = state.word.Length
+			state.status = state.guess_word.Status
+			if (state.status != GameStatus.Playing) getInProgress()
 			buildHintArgs()
 			if (state.showHints) getHints()
 		}
@@ -197,4 +210,26 @@ const getHints = async () => {
 		console.log(error)
 	}
 }
+
+const getInProgress = async () => {
+	if (!state.session.SignedIn) return
+	try {
+		const result = await fetch(`${apiUrl}/api/guess_word/progress`, {
+			headers: buildRequestHeaders(state.session),
+		})
+		if (result.ok) {
+			state.inProgress = await result.json()
+		}
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const continueGame = (event: any) => {
+	const { id } = event
+	state.guess_word.id = id
+	reloadGame()
+}
+
+onMounted(() => getInProgress())
 </script>
