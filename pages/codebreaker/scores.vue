@@ -1,7 +1,11 @@
 <template>
 	<div class="code-breaker-scores">
 		<div v-if="state.Items && state.Items.length > 0">
-			<CodeBreakeerScoresList :items="state.Items" />
+			<CodeBreakeerScoresList
+				:items="state.Items"
+				label="View"
+				@follow-link="followLink"
+			/>
 		</div>
 		<PaginationControls
 			:count="state.Count"
@@ -19,6 +23,7 @@ import { CodeBreaker } from '../../utils/types/code-breaker.type'
 let Items: CodeBreaker[] = reactive([])
 let state = reactive({ Items, Count: 0, Limit: 10, Offset: 0 })
 const path = '/api/code_breaker'
+const router = useRouter()
 
 const limitChanged = async (event: any) => {
 	const { limit } = event
@@ -59,6 +64,11 @@ const initialLoad = async () => {
 	state.Count = Count
 	state.Offset = Offset
 	state.Limit = Limit
+}
+
+const followLink = (event: any) => {
+	const { id } = event
+	router.push(`/codebreaker/${id}`)
 }
 
 onMounted(() => initialLoad())

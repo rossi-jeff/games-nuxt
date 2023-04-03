@@ -24,6 +24,13 @@
 			@get-word="randomWord"
 			v-if="state.status != GameStatus.Playing"
 		/>
+		<!-- in progress -->
+		<HangManScoresList
+			:items="state.inProgress"
+			label="Continue"
+			v-if="state.session.SignedIn && state.status != GameStatus.Playing"
+			@follow-link="continueGame"
+		/>
 		<!-- scores link -->
 		<div class="scores-link">
 			<NuxtLink to="/hangman/scores">See Top Scores</NuxtLink>
@@ -44,6 +51,7 @@ let Min = 6
 let Max = 12
 let Length = 0
 let Display: string[] = []
+let inProgress: HangMan[] = []
 
 const sessionStore = useSessionStore()
 const { session } = storeToRefs(sessionStore)
@@ -57,6 +65,7 @@ const state = reactive({
 	Length,
 	Display,
 	session,
+	inProgress,
 })
 
 const randomWord = async (event: any) => {
@@ -134,9 +143,48 @@ const reloadGame = async () => {
 		if (result.ok) {
 			state.hang_man = await result.json()
 			state.status = state.hang_man.Status
+			if (state.hang_man.word) state.word = state.hang_man.word
+			if (state.word.Length) state.Length = state.word.Length
+			if (state.status != GameStatus.Playing) getInProgress()
+			if (state.hang_man.Correct && state.word.Word) {
+				state.Display = []
+				for (let i = 0; i < state.Length; i++) state.Display[i] = ''
+				let correct: string[] = state.hang_man.Correct.toUpperCase()
+					.split(',')
+					.filter((l) => l.length == 1)
+				let letters: string[] = state.word.Word.toUpperCase()
+					.split('')
+					.filter((l) => l.length == 1)
+				for (let i = 0; i < letters.length; i++) {
+					if (correct.includes(letters[i])) state.Display[i] = letters[i]
+				}
+			}
 		}
 	} catch (error) {
 		console.log(error)
 	}
 }
+
+const getInProgress = async () => {
+	if (!state.session.SignedIn) return
+	try {
+		const result = await fetch(`${apiUrl}/api/hang_man/progress`, {
+			headers: buildRequestHeaders(state.session),
+		})
+		if (result.ok) {
+			state.inProgress = await result.json()
+		}
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const continueGame = (event: any) => {
+	const { id } = event
+	state.hang_man.id = id
+	state.Display = []
+	reloadGame()
+}
+
+onMounted(() => getInProgress())
 </script>

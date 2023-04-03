@@ -1,13 +1,22 @@
 <template>
 	<div class="hang-man-scores-list">
+		<div class="hang-man-header">
+			<div class="link">{{ props.label }}</div>
+			<div class="status">Status</div>
+			<div class="hm-score">Score</div>
+			<div class="word">Word</div>
+			<div class="length">Length</div>
+		</div>
 		<div
 			class="hang-man-score"
 			v-for="hang_man of props.items"
 			:key="hang_man.id"
 		>
-			<div class="link">{{ hang_man.id }}</div>
+			<div class="link">
+				<button @click="followLink(hang_man.id)">{{ props.label }}</button>
+			</div>
 			<div class="status">{{ hang_man.Status }}</div>
-			<div class="score">{{ hang_man.Score }}</div>
+			<div class="hm-score">{{ hang_man.Score }}</div>
 			<div class="word">{{ hang_man.word ? hang_man.word.Word : '' }}</div>
 			<div class="length">
 				{{ hang_man.word ? hang_man.word.Length : 0 }}
@@ -17,11 +26,30 @@
 </template>
 
 <script lang="ts" setup>
-const props = defineProps(['items'])
+const props = defineProps(['items', 'label'])
+const emit = defineEmits(['followLink'])
+
+const followLink = (id: number) => {
+	emit('followLink', { id })
+}
 </script>
 
 <style lang="postcss">
+div.hang-man-header {
+	@apply flex flex-wrap justify-between mx-2 font-bold bg-gray-200 mb-1 px-1;
+}
 div.hang-man-score {
 	@apply flex flex-wrap justify-between mx-2 border border-dashed border-b-gray-500;
+}
+div.link {
+	@apply w-20 text-left;
+}
+div.status,
+div.hm-score,
+div.word {
+	@apply w-20 text-center;
+}
+div.length {
+	@apply w-20 text-right;
 }
 </style>

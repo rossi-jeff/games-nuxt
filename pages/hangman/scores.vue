@@ -1,7 +1,11 @@
 <template>
 	<div class="hang-man-scores">
 		<div v-if="state.Items && state.Items.length > 0">
-			<HangManScoresList :items="state.Items" />
+			<HangManScoresList
+				:items="state.Items"
+				label="View"
+				@follow-link="followLink"
+			/>
 		</div>
 		<PaginationControls
 			:count="state.Count"
@@ -18,7 +22,8 @@ import { HangMan } from '../../utils/types/hang-man.type'
 
 let Items: HangMan[] = reactive([])
 let state = reactive({ Items, Count: 0, Limit: 10, Offset: 0 })
-const path = '/api/guess_word'
+const path = '/api/hang_man'
+const router = useRouter()
 
 const limitChanged = async (event: any) => {
 	const { limit } = event
@@ -59,6 +64,11 @@ const initialLoad = async () => {
 	state.Count = Count
 	state.Offset = Offset
 	state.Limit = Limit
+}
+
+const followLink = (event: any) => {
+	const { id } = event
+	router.push(`/hangman/${id}`)
 }
 
 onMounted(() => initialLoad())
