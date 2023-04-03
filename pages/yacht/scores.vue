@@ -1,7 +1,11 @@
 <template>
 	<div class="yacht-scores">
 		<div v-if="state.Items && state.Items.length > 0">
-			<YachtScoresList :items="state.Items" />
+			<YachtScoresList
+				:items="state.Items"
+				label="View"
+				@follow-link="followLink"
+			/>
 		</div>
 		<PaginationControls
 			:count="state.Count"
@@ -18,6 +22,7 @@ import { Yacht } from '../../utils/types/yacht.type'
 let Items: Yacht[] = reactive([])
 let state = reactive({ Items, Count: 0, Limit: 10, Offset: 0 })
 const path = '/api/yacht'
+const router = useRouter()
 
 const limitChanged = async (event: any) => {
 	const { limit } = event
@@ -58,6 +63,11 @@ const initialLoad = async () => {
 	state.Count = Count
 	state.Offset = Offset
 	state.Limit = Limit
+}
+
+const followLink = (event: any) => {
+	const { id } = event
+	router.push(`/yacht/${id}`)
 }
 
 onMounted(() => initialLoad())

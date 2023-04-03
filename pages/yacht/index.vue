@@ -77,6 +77,17 @@
 		<div v-show="!state.yacht.id || state.yacht.NumTurns == 12">
 			<button @click="newGame">New Game</button>
 		</div>
+		<!-- in progress -->
+		<YachtScoresList
+			:items="state.inProgress"
+			v-if="
+				state.session.SignedIn &&
+				((state.yacht.NumTurns && state.yacht.NumTurns >= 12) ||
+					!state.yacht.NumTurns)
+			"
+			label="Continue"
+			@follow-link="continueGame"
+		/>
 		<!-- scores link -->
 		<div class="scores-link">
 			<NuxtLink to="/yacht/scores">See Top Scores</NuxtLink>
@@ -101,11 +112,12 @@ const flags: FlagType = reactive({
 	showTwo: false,
 	showThree: false,
 })
+let inProgress: Yacht[] = []
 
 const sessionStore = useSessionStore()
 const { session } = storeToRefs(sessionStore)
 
-const state = reactive({ yacht, turn, options, flags, session })
+const state = reactive({ yacht, turn, options, flags, session, inProgress })
 
 const newGame = async () => {
 	try {
@@ -202,11 +214,34 @@ const reloadGame = async () => {
 		})
 		if (result.ok) {
 			state.yacht = await result.json()
+			if (state.yacht.turns && state.yacht.turns.length >= 12) getInProgress()
 		}
 	} catch (error) {
 		console.log(error)
 	}
 }
+
+const getInProgress = async () => {
+	if (!state.session.SignedIn) return
+	try {
+		const result = await fetch(`${apiUrl}/api/yacht/progress`, {
+			headers: buildRequestHeaders(state.session),
+		})
+		if (result.ok) {
+			state.inProgress = await result.json()
+		}
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const continueGame = (event: any) => {
+	const { id } = event
+	state.yacht.id = id
+	reloadGame()
+}
+
+onMounted(() => getInProgress())
 </script>
 
 <style lang="postcss">
