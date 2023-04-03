@@ -1,3 +1,5 @@
+import { apiUrl } from './api-url'
+
 export const loadScores = async (path: string, Offset: number, Limit: number) => {
 	const params: { [key: string]: number } = { Offset, Limit }
 	const url = new URL(path, apiUrl)
