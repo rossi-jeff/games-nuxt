@@ -1,7 +1,11 @@
 <template>
 	<div class="ten-grand-scores">
 		<div v-if="state.Items && state.Items.length > 0">
-			<TenGrandScoresList :items="state.Items" />
+			<TenGrandScoresList
+				:items="state.Items"
+				label="View"
+				@follow-link="followLink"
+			/>
 		</div>
 		<PaginationControls
 			:count="state.Count"
@@ -19,6 +23,7 @@ import { TenGrand } from '~~/utils/types/ten-grand.type'
 let Items: TenGrand[] = reactive([])
 let state = reactive({ Items, Count: 0, Limit: 10, Offset: 0 })
 const path = '/api/ten_grand'
+const router = useRouter()
 
 const limitChanged = async (event: any) => {
 	const { limit } = event
@@ -59,6 +64,11 @@ const initialLoad = async () => {
 	state.Count = Count
 	state.Offset = Offset
 	state.Limit = Limit
+}
+
+const followLink = (event: any) => {
+	const { id } = event
+	router.push(`/tengrand/${id}`)
 }
 
 onMounted(() => initialLoad())

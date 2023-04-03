@@ -18,6 +18,13 @@
 				state.ten_grand && state.ten_grand.turns && state.ten_grand.turns.length
 			"
 		/>
+		<!-- in progress -->
+		<TenGrandScoresList
+			:items="state.inProgress"
+			v-if="state.session.SignedIn && state.status != GameStatus.Playing"
+			label="Continue"
+			@follow-link="continueGame"
+		/>
 		<!-- scores link -->
 		<div class="scores-link">
 			<NuxtLink to="/tengrand/scores">See Top Scores</NuxtLink>
@@ -34,11 +41,18 @@ import { TenGrand } from '../../utils/types/ten-grand.type'
 let status: GameStatus | undefined
 let ten_grand: TenGrand = {}
 let ten_grand_turn: TenGrandTurn = {}
+let inProgress: TenGrand[] = []
 
 const sessionStore = useSessionStore()
 const { session } = storeToRefs(sessionStore)
 
-const state = reactive({ status, ten_grand, ten_grand_turn, session })
+const state = reactive({
+	status,
+	ten_grand,
+	ten_grand_turn,
+	session,
+	inProgress,
+})
 
 const newGame = async () => {
 	try {
@@ -90,4 +104,26 @@ const scoreOptions = async (event: any) => {
 		console.log(error)
 	}
 }
+
+const getInProgress = async () => {
+	if (!state.session.SignedIn) return
+	try {
+		const result = await fetch(`${apiUrl}/api/ten_grand/progress`, {
+			headers: buildRequestHeaders(state.session),
+		})
+		if (result.ok) {
+			state.inProgress = await result.json()
+		}
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+const continueGame = (event: any) => {
+	const { id } = event
+	state.ten_grand.id = id
+	reloadGame()
+}
+
+onMounted(() => getInProgress())
 </script>
