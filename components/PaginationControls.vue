@@ -85,7 +85,7 @@ onMounted(() => buildPages())
 
 <style lang="postcss">
 div.pagination-row {
-	@apply flex flex-wrap mx-2 justify-between my-2;
+	@apply flex flex-wrap justify-between my-2;
 }
 div.page-controls {
 	@apply flex flex-wrap;

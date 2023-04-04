@@ -815,19 +815,19 @@ onMounted(() => deck.preload())
 
 <style lang="postcss">
 div.free-cell-game {
-	@apply p-2;
+	@apply my-2;
 }
 div.header-row {
-	@apply mx-2 flex flex-wrap justify-between mb-2;
+	@apply flex flex-wrap justify-between mb-2;
 }
 div.buttons button {
 	@apply mr-2;
 }
 div.top-row {
-	@apply flex flex-wrap justify-between mx-2 mb-4;
+	@apply flex flex-wrap justify-between mb-4;
 }
 div.bottom-row {
-	@apply flex flex-wrap justify-between mx-2 mb-4;
+	@apply flex flex-wrap justify-between mb-4;
 }
 div.top-row-left,
 div.top-row-right {
@@ -842,7 +842,7 @@ div.top-row-right div.ace-cell {
 div.tableau,
 div.free-cell,
 div.ace-cell {
-	@apply w-28 h-36 p-0 border border-dashed border-black rounded text-center relative;
+	@apply w-28 h-36 p-0 border border-dashed border-indigo-900 bg-indigo-300 rounded text-center relative;
 }
 div.over {
 	border: dashed red !important;
@@ -850,10 +850,19 @@ div.over {
 div.ace-cell img.playing-card-img {
 	@apply cursor-pointer;
 }
-button {
-	@apply border border-black rounded my-1 px-2 py-1;
+div.free-cell-game button {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
 }
-button:hover {
-	@apply bg-yellow-200;
+div.free-cell-game button:hover {
+	@apply bg-slate-600 text-white;
+}
+div.scores-link {
+	@apply mx-2;
+}
+div.scores-link a {
+	@apply font-bold text-indigo-600;
+}
+div.scores-link a:hover {
+	@apply underline text-indigo-900;
 }
 </style>
