@@ -35,7 +35,7 @@ const scoreTurn = () => {
 
 <style lang="postcss">
 div.yacht-score-options {
-	@apply border border-black rounded p-2;
+	@apply border border-black rounded p-2 bg-slate-100;
 }
 div.score-option {
 	@apply flex flex-wrap px-2 border border-dashed border-b-gray-500;

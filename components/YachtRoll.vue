@@ -53,7 +53,7 @@ const rollDie = () => {
 
 <style lang="postcss">
 div.yacht-roll {
-	@apply border border-black rounded p-2;
+	@apply border border-black rounded p-2 bg-slate-100;
 }
 div.die-container {
 	@apply flex flex-wrap justify-between;
