@@ -98,9 +98,6 @@
 				Place Ship
 			</button>
 		</div>
-
-		<div>{{ props }}</div>
-		<div>{{ state }}</div>
 	</div>
 </template>
 
@@ -234,20 +231,20 @@ setTimeout(() => highLightShip(), 100)
 
 <style lang="postcss">
 div.sea-battle-ship-placement {
-	@apply border border-black rounded mx-2 my-1 p-2;
+	@apply border border-black rounded my-1 p-2 bg-slate-100;
 }
 div.placement-grid {
-	@apply mx-2 border border-gray-500 p-0 max-w-fit mb-4;
+	@apply mx-2 border border-slate-500 p-0 max-w-fit mb-4;
 }
 div.placement-row,
 div.top-header-row {
 	@apply flex flex-wrap;
 }
 div.header-cell {
-	@apply w-8 h-8 p-0 m-0 bg-gray-300 font-bold text-center pt-1;
+	@apply w-8 h-8 p-0 m-0 bg-slate-300 font-bold text-center pt-1;
 }
 div.placement-cell {
-	@apply w-8 h-8 p-0 m-0 border border-dotted border-gray-300;
+	@apply w-8 h-8 p-0 m-0 border border-dotted border-slate-300;
 }
 div.placement-form {
 	@apply flex flex-wrap;
@@ -255,10 +252,17 @@ div.placement-form {
 div.placement-form label {
 	@apply max-w-fit mr-2 inline-block font-bold;
 }
+div.placement-form select,
+div.sea-battle-ship-placement button {
+	@apply border border-black rounded px-2 py-1 bg-slate-200 mr-2;
+}
+div.sea-battle-ship-placement button:hover {
+	@apply bg-slate-600 text-white;
+}
 .highlighted {
 	@apply bg-yellow-200;
 }
 .occupied {
-	@apply bg-gray-200;
+	@apply bg-slate-200;
 }
 </style>
