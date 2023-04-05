@@ -4,8 +4,7 @@
 			<div class="color-radios">
 				<button @click="checkAll">Check All</button>
 				<div v-for="(color, index) of colors" :key="index" :class="color">
-					<strong>{{ color }}</strong
-					><br />
+					<strong>{{ color }}</strong>
 					<input
 						type="checkbox"
 						:value="color"
@@ -61,43 +60,26 @@ const startGame = () => {
 
 <style lang="postcss">
 div.code-breaker-game-options {
-	@apply border border-black rounded p-2 mx-2 my-1;
+	@apply border border-black rounded p-2 my-1 bg-slate-100;
+}
+div.code-breaker-game-options button,
+div.code-breaker-game-options select {
+	@apply border border-black rounded px-2 py-1 bg-slate-200 h-8 m-0;
+}
+div.code-breaker-game-options button:hover {
+	@apply bg-slate-600 text-white;
 }
 div.cb-options-form {
-	@apply flex flex-wrap justify-between mx-2;
+	@apply flex flex-wrap justify-between mx-2 align-top;
 }
 div.color-radios {
-	@apply flex flex-wrap;
+	@apply flex flex-wrap p-0;
 }
 div.color-radios div,
 div.color-radios button {
-	@apply mr-2 mb-2 border rounded w-20 text-center;
+	@apply mr-2 border rounded px-2 py-1 h-8;
 }
-.Black {
-	@apply bg-black border-black text-white;
-}
-.Blue {
-	@apply bg-blue-700 border-blue-900 text-white;
-}
-.Brown {
-	@apply bg-amber-800 border-amber-900 text-white;
-}
-.Green {
-	@apply bg-green-500 border-green-900;
-}
-.Orange {
-	@apply bg-orange-400 border-orange-900;
-}
-.Purple {
-	@apply bg-purple-600 border-purple-900;
-}
-.Red {
-	@apply bg-red-600 border-red-900;
-}
-.White {
-	@apply bg-white border-black;
-}
-.Yellow {
-	@apply bg-yellow-300 border-yellow-900;
+div.color-radios strong {
+	@apply inline-block mr-2;
 }
 </style>

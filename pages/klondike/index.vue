@@ -779,6 +779,9 @@ div.klondike-game button {
 div.klondike-game button:hover {
 	@apply bg-slate-600 text-white;
 }
+div.klondike-game div.scores-link {
+	@apply mx-2;
+}
 div.scores-link a {
 	@apply font-bold text-indigo-600;
 }

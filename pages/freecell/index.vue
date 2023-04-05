@@ -856,7 +856,10 @@ div.free-cell-game button {
 div.free-cell-game button:hover {
 	@apply bg-slate-600 text-white;
 }
-div.scores-link {
+div.free-cell-game div.scores-link {
+	@apply mx-2;
+}
+div.free-cell-game div.scores-link {
 	@apply mx-2;
 }
 div.scores-link a {
