@@ -1,5 +1,6 @@
 <template>
 	<div class="klondike-scores">
+		<h3>Klondike Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<KlondikeScoresList :items="state.Items" />
 		</div>
@@ -10,6 +11,7 @@
 			@limit-changed="limitChanged"
 			@page-changed="pageChanged"
 		/>
+		<NuxtLink to="/klondike"> &lt; Back to Game </NuxtLink>
 	</div>
 </template>
 
@@ -62,3 +64,18 @@ const initialLoad = async () => {
 
 onMounted(() => initialLoad())
 </script>
+
+<style lang="postcss">
+div.klondike-scores {
+	@apply mx-2 my-2;
+}
+div.klondike-scores h3 {
+	@apply font-bold text-lg text-indigo-600;
+}
+div.klondike-scores a {
+	@apply font-bold text-indigo-600;
+}
+div.klondike-scores a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

@@ -839,9 +839,9 @@ div.top-row-left div.free-cell {
 div.top-row-right div.ace-cell {
 	@apply ml-4;
 }
-div.tableau,
-div.free-cell,
-div.ace-cell {
+div.free-cell-game div.tableau,
+div.free-cell-game div.free-cell,
+div.free-cell-game div.ace-cell {
 	@apply w-28 h-36 p-0 border border-dashed border-indigo-900 bg-indigo-300 rounded text-center relative;
 }
 div.over {
