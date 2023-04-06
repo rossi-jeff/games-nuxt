@@ -18,6 +18,11 @@
 			v-if="state.status == GameStatus.Playing"
 			@toggle-show="toggleHints"
 		/>
+		<!-- solution -->
+		<GuessWordSolution
+			:word="state.word"
+			v-if="state.status != GameStatus.Playing && state.word && state.word.id"
+		/>
 		<!-- game options -->
 		<GuessWordGameOptions
 			@start-game="reandomWord"
