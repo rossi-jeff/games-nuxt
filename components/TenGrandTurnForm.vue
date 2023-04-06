@@ -249,7 +249,7 @@ watch(
 
 <style lang="postcss">
 div.ten-grand-turn-form {
-	@apply mx-2 mb-2 border border-black rounded p-2;
+	@apply mb-2 border border-black rounded p-2 bg-slate-100;
 }
 div.turn-border {
 	@apply mb-2 border border-black rounded p-2;

@@ -8,7 +8,7 @@
 			@score-options="scoreOptions"
 		/>
 		<!-- new game button-->
-		<div class="mx-2" v-if="state.status != GameStatus.Playing">
+		<div v-if="state.status != GameStatus.Playing">
 			<button @click="newGame">New Game</button>
 		</div>
 		<!-- turn list -->
@@ -127,3 +127,15 @@ const continueGame = (event: any) => {
 
 onMounted(() => getInProgress())
 </script>
+
+<style lang="postcss">
+div.ten-grand-game {
+	@apply mx-2 my-2;
+}
+div.ten-grand-game button {
+	@apply border border-black rounded px-2 py-1 bg-slate-200;
+}
+div.ten-grand-game button:hover {
+	@apply bg-slate-600 text-white;
+}
+</style>

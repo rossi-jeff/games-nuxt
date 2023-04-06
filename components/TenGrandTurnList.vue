@@ -14,6 +14,6 @@ const props = defineProps(['turns'])
 
 <style lang="postcss">
 div.ten-grand-turn-list {
-	@apply mx-2 mb-2 border border-black rounded p-2 max-h-96 overflow-y-auto;
+	@apply mb-2 border border-black rounded p-2 max-h-96 overflow-y-auto bg-slate-100;
 }
 </style>
