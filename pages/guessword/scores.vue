@@ -1,5 +1,6 @@
 <template>
 	<div class="guess-word-scores">
+		<h3>Guess Word Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<GuessWordScoresList
 				:items="state.Items"
@@ -14,6 +15,7 @@
 			@limit-changed="limitChanged"
 			@page-changed="pageChanged"
 		/>
+		<NuxtLink to="/guessword"> &lt; Back to Game </NuxtLink>
 	</div>
 </template>
 
@@ -73,3 +75,18 @@ const followLink = (event: any) => {
 
 onMounted(() => initialLoad())
 </script>
+
+<style lang="postcss">
+div.guess-word-scores {
+	@apply mx-2 my-2;
+}
+div.guess-word-scores h3 {
+	@apply font-bold text-lg text-indigo-600;
+}
+div.guess-word-scores a {
+	@apply font-bold text-indigo-600;
+}
+div.guess-word-scores a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

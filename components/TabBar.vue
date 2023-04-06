@@ -25,6 +25,7 @@ type TabType = {
 const tabs: TabType[] = [
 	{ to: '/', text: 'Home' },
 	{ to: '/yacht', text: 'Yacht' },
+	{ to: '/guessword', text: 'Guess Word' },
 	{ to: '/freecell', text: 'Free Cell' },
 	{ to: '/klondike', text: 'Klondike' },
 	{ to: '/codebreaker', text: 'Code Breaker' },

@@ -233,3 +233,9 @@ const continueGame = (event: any) => {
 
 onMounted(() => getInProgress())
 </script>
+
+<style lang="postcss">
+div.guess-word-game {
+	@apply mx-2 my-2;
+}
+</style>

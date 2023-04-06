@@ -32,7 +32,7 @@ const toggleShow = () => {
 
 <style lang="postcss">
 div.guess-word-hint-list {
-	@apply border border-black rounded mx-2 my-1 p-2;
+	@apply border border-black rounded mb-2 p-2 bg-slate-100;
 }
 div.hint-list-scroller {
 	@apply max-h-48 overflow-y-auto flex flex-wrap;
@@ -40,7 +40,7 @@ div.hint-list-scroller {
 div.hint {
 	@apply mr-4 mb-2;
 }
-label {
-	@apply ml-2;
+div.guess-word-hint-list label {
+	@apply ml-2 font-bold;
 }
 </style>
