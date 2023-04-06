@@ -1,25 +1,7 @@
 <template>
 	<div class="register-container">
 		<div class="register-form" v-if="!state.registered">
-			<div class="input-field">
-				<label for="credentials-user-name">User Name</label>
-				<input
-					type="text"
-					name="credentials-user-name"
-					v-model="state.credentials.UserName"
-				/>
-			</div>
-			<div class="input-field">
-				<label for="credentials-pass-word">Pass Word</label>
-				<input
-					type="password"
-					name="credentials-pass-word"
-					v-model="state.credentials.password"
-				/>
-			</div>
-			<div class="submit-button">
-				<button @click="register">Register</button>
-			</div>
+			<CredentialsForm label="Register" @submit-form="register" />
 		</div>
 		<div v-else>
 			Thank You for registering. Please <NuxtLink to="/login">Sign In</NuxtLink>
@@ -28,20 +10,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ArgsUserCredential } from '../utils/types/args-user-credential.type'
+const state = reactive({ registered: false })
 
-let credentials: ArgsUserCredential = {
-	UserName: '',
-	password: '',
-}
-const state = reactive({ credentials, registered: false })
-
-const register = async () => {
+const register = async (event: any) => {
+	const { UserName, password } = event
 	try {
-		const { credentials } = state
 		const result = await fetch(`${apiUrl}/api/auth/register`, {
 			method: 'POST',
-			body: JSON.stringify(credentials),
+			body: JSON.stringify({ UserName, password }),
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json',
@@ -59,3 +35,9 @@ const register = async () => {
 	}
 }
 </script>
+
+<style lang="postcss">
+div.register-container {
+	@apply mx-2 my-2;
+}
+</style>

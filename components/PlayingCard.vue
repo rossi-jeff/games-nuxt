@@ -7,7 +7,7 @@
 		@dragstart="onDragStart"
 	>
 		<div
-			class="card-wrapper"
+			class="playing-card-wrapper"
 			v-if="props.card"
 			draggable="false"
 			@click="onClick"
@@ -37,7 +37,9 @@ const alt = computed(() => {
 		? `card-${from}-${level}`
 		: `${card.face} of ${card.suit}`
 })
-const id = `${props.from}_${props.level}_${props.card ? props.card.id : '-'}_${props.index ? props.index : 0}`
+const id = `${props.from}_${props.level}_${props.card ? props.card.id : '-'}_${
+	props.index ? props.index : 0
+}`
 let timeout: ReturnType<typeof setTimeout> | undefined
 const emit = defineEmits(['click', 'dragStart'])
 
@@ -71,7 +73,7 @@ onMounted(() => setTimeout(() => setTop(), 25))
 div.playing-card {
 	@apply w-28 h-36 p-0 absolute top-2 left-2;
 }
-div.card-wrapper {
+div.playing-card-wrapper {
 	@apply w-24 h-32 p-0;
 }
 img.playing-card-img {

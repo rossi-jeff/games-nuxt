@@ -1,25 +1,7 @@
 <template>
 	<div class="login-container">
 		<div v-if="!session.SignedIn">
-			<div class="input-field">
-				<label for="credentials-user-name">User Name</label>
-				<input
-					type="text"
-					name="credentials-user-name"
-					v-model="state.credentials.UserName"
-				/>
-			</div>
-			<div class="input-field">
-				<label for="credentials-pass-word">Pass Word</label>
-				<input
-					type="password"
-					name="credentials-pass-word"
-					v-model="state.credentials.password"
-				/>
-			</div>
-			<div class="submit-button">
-				<button @click="login">Sign In</button>
-			</div>
+			<CredentialsForm label="Sign In" @submit-form="login" />
 		</div>
 		<div class="logout-form" v-else>
 			<button @click="clearSession">Sign Out</button>
@@ -30,24 +12,17 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia'
 import { SessionData } from '../utils/session.store'
-import { ArgsUserCredential } from '../utils/types/args-user-credential.type'
 
 const sessionStore = useSessionStore()
 const { setSession, clearSession } = sessionStore
 const { session } = storeToRefs(sessionStore)
 
-let credentials: ArgsUserCredential = {
-	UserName: '',
-	password: '',
-}
-const state = reactive({ credentials })
-
-const login = async () => {
-	const { credentials } = state
+const login = async (event: any) => {
+	const { UserName, password } = event
 	try {
 		const result = await fetch(`${apiUrl}/api/auth/login`, {
 			method: 'POST',
-			body: JSON.stringify(credentials),
+			body: JSON.stringify({ UserName, password }),
 			headers: {
 				'Content-Type': 'application/json',
 				Accept: 'application/json',
@@ -72,14 +47,13 @@ const login = async () => {
 </script>
 
 <style lang="postcss">
-div.input-field {
-	@apply px-2 pb-2;
+div.login-container {
+	@apply mx-2 my-2;
 }
-div.submit-button,
-div.logout-form {
-	@apply px-4;
+div.logout-form button {
+	@apply border border-black rounded px-2 py-1 bg-slate-200;
 }
-input {
-	@apply border border-black rounded;
+div.logout-form button:hover {
+	@apply bg-slate-600 text-white;
 }
 </style>
