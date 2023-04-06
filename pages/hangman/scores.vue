@@ -73,3 +73,9 @@ const followLink = (event: any) => {
 
 onMounted(() => initialLoad())
 </script>
+
+<style lang="postcss">
+div.hang-man-scores {
+	@apply mx-2 my-2;
+}
+</style>

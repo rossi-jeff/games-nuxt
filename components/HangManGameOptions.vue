@@ -51,4 +51,20 @@ const getWord = () => {
 div.hang-man-options-form {
 	@apply flex flex-wrap;
 }
+div.hang-man-options-form select,
+div.hang-man-options-form button {
+	@apply border border-black rounded px-2 py-1 bg-slate-200 mr-2;
+}
+div.hang-man-options-form button:hover {
+	@apply bg-slate-600 text-white;
+}
+div.hang-man-options-form button {
+	@apply mt-0;
+}
+div.hang-man-options-form label {
+	@apply inline-block font-bold mr-2;
+}
+div.hang-man-game-options {
+	@apply my-2;
+}
 </style>

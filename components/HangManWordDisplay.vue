@@ -12,9 +12,9 @@ const props = defineProps(['display'])
 
 <style lang="postcss">
 div.hang-man-word-display {
-	@apply flex flex-wrap mx-2;
+	@apply flex flex-wrap my-2;
 }
 div.display-letter {
-	@apply w-8 h-8 mr-2 border border-b-black text-center font-bold;
+	@apply w-8 h-8 mr-2 border border-b-black text-center font-bold bg-indigo-100;
 }
 </style>

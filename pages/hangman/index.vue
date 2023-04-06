@@ -188,3 +188,9 @@ const continueGame = (event: any) => {
 
 onMounted(() => getInProgress())
 </script>
+
+<style lang="postcss">
+div.hang-man-game {
+	@apply mx-2 my-2;
+}
+</style>

@@ -58,7 +58,7 @@ watch(
 
 <style lang="postcss">
 div.hang-man-image {
-	@apply w-96 h-96 mx-2 my-1 border border-black rounded relative;
+	@apply w-96 h-96 my-1 border border-black rounded relative bg-slate-100;
 }
 div.gallows-top {
 	@apply w-48 h-6 absolute bg-amber-800 top-2 left-8;
