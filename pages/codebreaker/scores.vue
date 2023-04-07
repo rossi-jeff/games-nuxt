@@ -1,5 +1,8 @@
 <template>
 	<div class="code-breaker-scores">
+		<Head>
+			<Title>Code Breaker Scores</Title>
+		</Head>
 		<div v-if="state.Items && state.Items.length > 0">
 			<CodeBreakeerScoresList
 				:items="state.Items"

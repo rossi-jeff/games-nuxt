@@ -1,5 +1,8 @@
 <template>
 	<div class="code-breaker-detail">
+		<Head>
+			<Title>Code Breaker Score Detail</Title>
+		</Head>
 		<!-- back link -->
 		<NuxtLink to="/codebreaker/scores"> &lt; Back to Scores</NuxtLink>
 		<!-- code breaker guess list-->

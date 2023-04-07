@@ -1,5 +1,8 @@
 <template>
 	<div class="klondike-scores">
+		<Head>
+			<Title>Klondike Scores</Title>
+		</Head>
 		<h3>Klondike Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<KlondikeScoresList :items="state.Items" />

@@ -1,5 +1,8 @@
 <template>
 	<div class="free-cell-scores">
+		<Head>
+			<Title>Free Cell Scores</Title>
+		</Head>
 		<h3>Free Cell Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<FreeCellScoresList :items="state.Items" />

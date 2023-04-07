@@ -1,5 +1,8 @@
 <template>
 	<div class="login-container">
+		<Head>
+			<Title>Sign In</Title>
+		</Head>
 		<div v-if="!session.SignedIn">
 			<CredentialsForm label="Sign In" @submit-form="login" />
 		</div>

@@ -1,5 +1,8 @@
 <template>
 	<div class="sea-battle-details">
+		<Head>
+			<Title>Sea Battle Score Detail</Title>
+		</Head>
 		<!-- player turn -->
 		<SeaBattlePlayerTurn
 			:turns="state.playerTurns"

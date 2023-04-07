@@ -1,5 +1,8 @@
 <template>
 	<div class="yacht-game">
+		<Head>
+			<Title>Yacht</Title>
+		</Head>
 		<h1>Yacht</h1>
 		<div
 			v-show="

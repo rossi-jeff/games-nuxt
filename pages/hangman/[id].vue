@@ -1,5 +1,8 @@
 <template>
 	<div class="hang-man-details">
+		<Head>
+			<Title>Hang Man Score Detail</Title>
+		</Head>
 		<!-- back link -->
 		<NuxtLink to="/hangman/scores" class="mx-2 mb-2">&lt; Back to Scores</NuxtLink>
 		<!-- hang man image -->

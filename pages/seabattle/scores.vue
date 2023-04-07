@@ -1,5 +1,8 @@
 <template>
 	<div class="sea-battle-scores">
+		<Head>
+			<Title>Sea Battle Scores</Title>
+		</Head>
 		<h3>Sea Battle Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<SeaBattleScoresList

@@ -1,5 +1,8 @@
 <template>
 	<div class="guess-word-detail">
+		<Head>
+			<Title>Guess Word Score Detail</Title>
+		</Head>
 		<!-- back link -->
 		<NuxtLink to="/guessword/scores" class="mx-2 mb-2">&lt; Back to Scores</NuxtLink>
 		<!-- guess list -->

@@ -1,5 +1,8 @@
 <template>
 	<div class="code-breaker-game">
+		<Head>
+			<Title>Code Breaker</Title>
+		</Head>
 		<!-- code breaker guess list-->
 		<CodeBreakerGuessList
 			:guesses="state.code_breaker.guesses"

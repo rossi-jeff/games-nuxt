@@ -1,5 +1,8 @@
 <template>
 	<div class="register-container">
+		<Head>
+			<Title>Register</Title>
+		</Head>
 		<div class="register-form" v-if="!state.registered">
 			<CredentialsForm label="Register" @submit-form="register" />
 		</div>

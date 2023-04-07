@@ -1,5 +1,8 @@
 <template>
 	<div class="yacht-details">
+		<Head>
+			<Title>Yacht Score Detail</Title>
+		</Head>
 		<NuxtLink to="/yacht/scores"> &lt; Back to Scores </NuxtLink>
 		<YachtScoreCard :turns="state.yacht.turns" :total="state.yacht.Total" />
 	</div>

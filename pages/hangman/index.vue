@@ -1,5 +1,8 @@
 <template>
 	<div class="hang-man-game">
+		<Head>
+			<Title>Hang Man</Title>
+		</Head>
 		<!-- hang man image -->
 		<HangManImage :wrong="state.hang_man.Wrong" />
 		<!-- word display-->

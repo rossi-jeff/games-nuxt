@@ -1,5 +1,8 @@
 <template>
 	<div class="free-cell-game">
+		<Head>
+			<Title>Free Cell</Title>
+		</Head>
 		<div class="header-row">
 			<div class="buttons">
 				<button @click="deal" v-if="state.status != GameStatus.Playing">

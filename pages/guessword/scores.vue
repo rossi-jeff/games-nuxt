@@ -1,5 +1,8 @@
 <template>
 	<div class="guess-word-scores">
+		<Head>
+			<Title>Guess Word Scores</Title>
+		</Head>
 		<h3>Guess Word Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<GuessWordScoresList

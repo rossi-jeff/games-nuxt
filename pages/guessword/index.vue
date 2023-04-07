@@ -1,5 +1,8 @@
 <template>
 	<div class="guess-word-game">
+		<Head>
+			<Title>Guess Word</Title>
+		</Head>
 		<!-- guess list -->
 		<GuessWordGuessList
 			:guesses="state.guess_word.guesses"

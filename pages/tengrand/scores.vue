@@ -1,5 +1,8 @@
 <template>
 	<div class="ten-grand-scores">
+		<Head>
+			<Title>Ten Grand Scores</Title>
+		</Head>
 		<h3>Ten Grand Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<TenGrandScoresList

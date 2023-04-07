@@ -1,5 +1,8 @@
 <template>
 	<div class="hang-man-scores">
+		<Head>
+			<Title>Hang Man Scores</Title>
+		</Head>
 		<h3>Hang Man Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<HangManScoresList

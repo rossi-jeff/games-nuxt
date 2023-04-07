@@ -1,5 +1,8 @@
 <template>
 	<div class="klondike-game" v-if="state.rendered">
+		<Head>
+			<Title>Klondike</Title>
+		</Head>
 		<div class="header-row">
 			<div class="buttons">
 				<button @click="deal" v-if="state.status != GameStatus.Playing">

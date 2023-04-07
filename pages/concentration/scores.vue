@@ -1,5 +1,8 @@
 <template>
 	<div class="concentration-scores">
+		<Head>
+			<Title>Concentration Scores</Title>
+		</Head>
 		<h3>Concentration Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<ConcentrationScoresList :items="state.Items" />

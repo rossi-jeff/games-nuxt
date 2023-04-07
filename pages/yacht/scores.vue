@@ -1,5 +1,8 @@
 <template>
 	<div class="yacht-scores">
+		<Head>
+			<Title>Yacht Scores</Title>
+		</Head>
 		<h3>Yacht Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<YachtScoresList

@@ -1,5 +1,8 @@
 <template>
 	<div class="ten-grand-details">
+		<Head>
+			<Title>Ten Grand Score Detail</Title>
+		</Head>
 		<NuxtLink to="/tengrand/scores"> &lt; Back to Scores </NuxtLink>
 		<!-- turn list -->
 		<TenGrandTurnList

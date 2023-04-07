@@ -1,5 +1,8 @@
 <template>
 	<div class="concentration-game">
+		<Head>
+			<Title>Concentration</Title>
+		</Head>
 		<div class="concentraton-header">
 			<div>
 				<button @click="deal" v-if="state.status != GameStatus.Playing">

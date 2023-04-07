@@ -1,5 +1,8 @@
 <template>
 	<div class="ten-grand-game">
+		<Head>
+			<Title>Ten Grand</Title>
+		</Head>
 		<!-- turn form -->
 		<TenGrandTurnForm
 			:ten-grand="state.ten_grand"

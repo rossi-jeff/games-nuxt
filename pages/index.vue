@@ -1,5 +1,8 @@
 <template>
 	<div class="home-content">
+		<Head>
+			<Title>Games by Jeff Rossi</Title>
+		</Head>
 		<h3>Welcome Visitor</h3>
 		<div>
 			The pages of this site are a collection of games written in typescript.
