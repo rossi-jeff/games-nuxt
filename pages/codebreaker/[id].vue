@@ -1,15 +1,15 @@
 <template>
 	<div class="code-breaker-detail">
+		<Head>
+			<Title>Code Breaker Score Detail</Title>
+		</Head>
 		<!-- back link -->
-		<NuxtLink to="/codebreaker/scores" class="mx-2 mb-2"
-			>Back to Scores</NuxtLink
-		>
+		<NuxtLink to="/codebreaker/scores"> &lt; Back to Scores</NuxtLink>
 		<!-- code breaker guess list-->
 		<CodeBreakerGuessList
 			:guesses="state.code_breaker.guesses"
 			v-if="state.code_breaker.guesses && state.code_breaker.guesses.length > 0"
 		/>
-		<div>{{ route.params.id }}</div>
 	</div>
 </template>
 
@@ -33,3 +33,15 @@ const reloadGame = async () => {
 
 onMounted(() => reloadGame())
 </script>
+
+<style lang="postcss">
+div.code-breaker-detail {
+	@apply mx-2 my-2;
+}
+div.code-breaker-detail a {
+	@apply font-bold text-indigo-600;
+}
+div.code-breaker-detail a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

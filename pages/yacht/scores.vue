@@ -1,5 +1,9 @@
 <template>
 	<div class="yacht-scores">
+		<Head>
+			<Title>Yacht Scores</Title>
+		</Head>
+		<h3>Yacht Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<YachtScoresList
 				:items="state.Items"
@@ -14,6 +18,7 @@
 			@limit-changed="limitChanged"
 			@page-changed="pageChanged"
 		/>
+		<NuxtLink to="/yacht"> &lt; Back to Game </NuxtLink>
 	</div>
 </template>
 
@@ -72,3 +77,18 @@ const followLink = (event: any) => {
 
 onMounted(() => initialLoad())
 </script>
+
+<style lang="postcss">
+div.yacht-scores {
+	@apply mx-2 my-2;
+}
+div.yacht-scores h3 {
+	@apply font-bold text-lg text-indigo-600;
+}
+div.yacht-scores a {
+	@apply font-bold text-indigo-600;
+}
+div.yacht-scores a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

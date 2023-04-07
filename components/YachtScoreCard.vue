@@ -17,7 +17,7 @@ const props = defineProps(['turns', 'total'])
 
 <style lang="postcss">
 div.yacht-score-card {
-	@apply border border-black rounded p-2;
+	@apply border border-black rounded p-2 bg-slate-100;
 }
 div.yacht-score,
 div.yacht-total {

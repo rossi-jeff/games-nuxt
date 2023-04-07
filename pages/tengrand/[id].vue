@@ -1,5 +1,9 @@
 <template>
 	<div class="ten-grand-details">
+		<Head>
+			<Title>Ten Grand Score Detail</Title>
+		</Head>
+		<NuxtLink to="/tengrand/scores"> &lt; Back to Scores </NuxtLink>
 		<!-- turn list -->
 		<TenGrandTurnList
 			:turns="state.ten_grand.turns"
@@ -33,3 +37,15 @@ const loadGame = async () => {
 
 onMounted(() => loadGame())
 </script>
+
+<style lang="postcss">
+div.ten-grand-details {
+	@apply mx-2 my-2;
+}
+div.ten-grand-details a {
+	@apply font-bold text-indigo-600;
+}
+div.ten-grand-details a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

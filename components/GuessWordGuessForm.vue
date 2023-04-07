@@ -46,12 +46,18 @@ const sendGuess = () => {
 
 <style lang="postcss">
 div.guess-word-guess-form {
-	@apply mx-2 my-1 p-2 border border-black rounded flex flex-wrap;
+	@apply my-2 p-2 border border-black rounded flex flex-wrap bg-slate-100;
 }
 div.guess-letters {
 	@apply flex flex-wrap;
 }
 input.letter-input {
 	@apply w-8 h-8 border border-black rounded mr-4 text-center;
+}
+div.guess-word-guess-form button {
+	@apply border border-black rounded px-2 py-1 bg-slate-200 mt-0;
+}
+div.guess-word-guess-form button:hover {
+	@apply bg-slate-600 text-white;
 }
 </style>

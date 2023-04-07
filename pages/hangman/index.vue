@@ -1,5 +1,8 @@
 <template>
 	<div class="hang-man-game">
+		<Head>
+			<Title>Hang Man</Title>
+		</Head>
 		<!-- hang man image -->
 		<HangManImage :wrong="state.hang_man.Wrong" />
 		<!-- word display-->
@@ -188,3 +191,9 @@ const continueGame = (event: any) => {
 
 onMounted(() => getInProgress())
 </script>
+
+<style lang="postcss">
+div.hang-man-game {
+	@apply mx-2 my-2;
+}
+</style>

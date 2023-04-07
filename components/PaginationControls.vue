@@ -85,15 +85,21 @@ onMounted(() => buildPages())
 
 <style lang="postcss">
 div.pagination-row {
-	@apply flex flex-wrap mx-2 justify-between my-2;
+	@apply flex flex-wrap justify-between my-2;
 }
 div.page-controls {
 	@apply flex flex-wrap;
 }
 div.page-controls button {
-	@apply ml-2;
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200 ml-2;
 }
-button.current {
-	@apply bg-gray-800 text-white;
+div.page-controls button:hover {
+	@apply bg-slate-600 text-white;
+}
+div.page-controls button.current {
+	@apply bg-slate-900 text-white;
+}
+div.limit-controls select {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200 ml-2;
 }
 </style>

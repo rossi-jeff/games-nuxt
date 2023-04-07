@@ -30,10 +30,10 @@ const followLink = (id: number) => {
 
 <style lang="postcss">
 div.ten-grand-header {
-	@apply flex flex-wrap justify-between mx-2 font-bold bg-gray-200 mb-1 px-1;
+	@apply flex flex-wrap justify-between font-bold bg-slate-200 mb-1 px-1;
 }
 div.ten-grand-score {
-	@apply flex flex-wrap justify-between mx-2 border border-dashed border-b-gray-500;
+	@apply flex flex-wrap justify-between border border-dashed border-b-slate-500;
 }
 div.link {
 	@apply w-20 text-left;
@@ -43,5 +43,11 @@ div.status {
 }
 div.tg-score {
 	@apply w-20 text-right;
+}
+div.ten-grand-score button {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
+}
+div.ten-grand-score button:hover {
+	@apply bg-slate-600 text-white;
 }
 </style>

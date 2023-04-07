@@ -1,5 +1,8 @@
 <template>
 	<div class="guess-word-game">
+		<Head>
+			<Title>Guess Word</Title>
+		</Head>
 		<!-- guess list -->
 		<GuessWordGuessList
 			:guesses="state.guess_word.guesses"
@@ -17,6 +20,11 @@
 			:show-hints="state.showHints"
 			v-if="state.status == GameStatus.Playing"
 			@toggle-show="toggleHints"
+		/>
+		<!-- solution -->
+		<GuessWordSolution
+			:word="state.word"
+			v-if="state.status != GameStatus.Playing && state.word && state.word.id"
 		/>
 		<!-- game options -->
 		<GuessWordGameOptions
@@ -233,3 +241,9 @@ const continueGame = (event: any) => {
 
 onMounted(() => getInProgress())
 </script>
+
+<style lang="postcss">
+div.guess-word-game {
+	@apply mx-2 my-2;
+}
+</style>

@@ -1,5 +1,8 @@
 <template>
 	<div class="yacht-game">
+		<Head>
+			<Title>Yacht</Title>
+		</Head>
 		<h1>Yacht</h1>
 		<div
 			v-show="
@@ -245,8 +248,11 @@ onMounted(() => getInProgress())
 </script>
 
 <style lang="postcss">
+div.yacht-game {
+	@apply mx-2 my-2;
+}
 h1 {
-	@apply font-bold text-xl mb-2;
+	@apply font-bold text-xl mb-2 text-indigo-600;
 }
 div.yacht {
 	@apply p-2;
@@ -255,10 +261,16 @@ div.yacht-roll,
 div.yacht-score-options {
 	@apply mb-2;
 }
-button {
-	@apply border border-black rounded my-1 px-2 py-1;
+div.yacht-game button {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
 }
-button:hover {
-	@apply bg-yellow-200;
+div.yacht-game button:hover {
+	@apply bg-slate-600 text-white;
+}
+div.yacht-game a {
+	@apply font-bold text-indigo-600;
+}
+div.yacht-game a:hover {
+	@apply underline text-indigo-900;
 }
 </style>

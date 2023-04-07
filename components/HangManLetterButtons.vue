@@ -39,15 +39,18 @@ const guessLetter = (Letter: string) => {
 
 <style lang="postcss">
 div.hang-man-letter-buttons {
-	@apply flex flex-wrap mx-2;
+	@apply flex flex-wrap my-2;
 }
 div.hang-man-letter-buttons button {
-	@apply mr-2 mb-2;
+	@apply border border-black rounded px-2 py-1 bg-slate-200 mr-2 mb-2;
 }
-.Correct {
+div.hang-man-letter-buttons button:hover {
+	@apply bg-slate-600 text-white;
+}
+div.hang-man-letter-buttons button.Correct {
 	@apply bg-green-200 border-green-700;
 }
-.Wrong {
+div.hang-man-letter-buttons button.Wrong {
 	@apply bg-red-200 border-red-700 line-through;
 }
 </style>

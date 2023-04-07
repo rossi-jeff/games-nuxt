@@ -1,12 +1,17 @@
 <template>
 	<div class="guess-word-detail">
+		<Head>
+			<Title>Guess Word Score Detail</Title>
+		</Head>
 		<!-- back link -->
-		<NuxtLink to="/guessword/scores" class="mx-2 mb-2">Back to Scores</NuxtLink>
+		<NuxtLink to="/guessword/scores" class="mx-2 mb-2">&lt; Back to Scores</NuxtLink>
 		<!-- guess list -->
 		<GuessWordGuessList
 			:guesses="state.guess_word.guesses"
 			v-if="state.guess_word.guesses && state.guess_word.guesses.length"
 		/>
+		<!-- solution -->
+		<GuessWordSolution :word="state.guess_word.word" />
 	</div>
 </template>
 
@@ -30,3 +35,15 @@ const loadGame = async () => {
 
 onMounted(() => loadGame())
 </script>
+
+<style lang="postcss">
+div.guess-word-detail {
+	@apply mx-2 my-2;
+}
+div.guess-word-detail a {
+	@apply font-bold text-indigo-600;
+}
+div.guess-word-detail a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

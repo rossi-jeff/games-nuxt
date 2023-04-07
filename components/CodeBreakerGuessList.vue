@@ -6,10 +6,18 @@
 			:key="guess.id"
 		>
 			<div class="guess-colors">
-				<div v-for="(color,index) of guess.colors" :key="index" :class="color.Color"></div>
+				<div
+					v-for="(color, index) of guess.colors"
+					:key="index"
+					:class="color.Color"
+				></div>
 			</div>
 			<div class="guess-keys">
-				<div v-for="(key,index) of guess.keys" :key="index" :class="key.Key"></div>
+				<div
+					v-for="(key, index) of guess.keys"
+					:key="index"
+					:class="key.Key"
+				></div>
 			</div>
 		</div>
 	</div>
@@ -21,21 +29,21 @@ const props = defineProps(['guesses'])
 
 <style lang="postcss">
 div.code-breaker-guess-list {
-	@apply mx-2 my-1 p-2 border border-black rounded;
+	@apply mb-2 p-2 border border-black rounded bg-slate-100;
 }
-	div.code-breaker-guess {
-		@apply flex flex-wrap border border-dotted border-b-gray-400 py-1 px-2;
-	}
-	div.guess-colors {
-		@apply flex flex-wrap;
-	}
-	div.guess-colors div {
-		@apply w-8 h-8 rounded-full mr-4 border;
-	}
-	div.guess-keys {
-		@apply flex flex-wrap;
-	}
-	div.guess-keys div {
-		@apply w-4 h-4 rounded-full ml-2 border;
-	}
+div.code-breaker-guess {
+	@apply flex flex-wrap border border-dotted border-b-gray-400 py-1 px-2;
+}
+div.guess-colors {
+	@apply flex flex-wrap;
+}
+div.guess-colors div {
+	@apply w-8 h-8 rounded-full mr-4 border;
+}
+div.guess-keys {
+	@apply flex flex-wrap;
+}
+div.guess-keys div {
+	@apply w-4 h-4 rounded-full ml-2 border;
+}
 </style>

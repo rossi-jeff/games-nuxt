@@ -1,5 +1,9 @@
 <template>
 	<div class="yacht-details">
+		<Head>
+			<Title>Yacht Score Detail</Title>
+		</Head>
+		<NuxtLink to="/yacht/scores"> &lt; Back to Scores </NuxtLink>
 		<YachtScoreCard :turns="state.yacht.turns" :total="state.yacht.Total" />
 	</div>
 </template>
@@ -24,3 +28,15 @@ const loadGame = async () => {
 
 onMounted(() => loadGame())
 </script>
+
+<style lang="postcss">
+div.yacht-details {
+	@apply mx-2 my-2;
+}
+div.yacht-details a {
+	@apply font-bold text-indigo-600;
+}
+div.yacht-details a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

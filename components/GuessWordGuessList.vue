@@ -22,7 +22,7 @@ const props = defineProps(['guesses'])
 
 <style lang="postcss">
 div.guess-word-guess-list {
-	@apply border border-black rounded mx-2 my-1 p-2;
+	@apply border border-black rounded my-1 p-2 bg-slate-100;
 }
 div.guess-word-guess {
 	@apply flex flex-wrap;

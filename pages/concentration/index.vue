@@ -1,5 +1,8 @@
 <template>
 	<div class="concentration-game">
+		<Head>
+			<Title>Concentration</Title>
+		</Head>
 		<div class="concentraton-header">
 			<div>
 				<button @click="deal" v-if="state.status != GameStatus.Playing">
@@ -92,6 +95,7 @@ const deal = () => {
 	start = Date.now()
 	state.moves = 0
 	state.elapsed = 0
+	newGame()
 }
 
 const newGame = async () => {
@@ -231,14 +235,20 @@ onMounted(() => deck.preload())
 </script>
 
 <style lang="postcss">
+div.concentration-game {
+	@apply mx-2 my-2;
+}
 div.concentraton-header {
-	@apply flex flex-wrap justify-between mx-2;
+	@apply flex flex-wrap justify-between;
 }
 div.concentraton-header button {
-	@apply mr-2;
+	@apply border border-black rounded px-2 py-1 bg-slate-200 mr-2;
+}
+div.concentraton-header button:hover {
+	@apply bg-slate-600 text-white;
 }
 div.concentration-cards {
-	@apply flex flex-wrap p-2 h-fit;
+	@apply flex flex-wrap my-2 h-fit;
 }
 div.card-wrapper {
 	@apply w-28 h-36 relative;

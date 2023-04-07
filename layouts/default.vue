@@ -1,25 +1,17 @@
 <template>
-	<div>
-		<div>
-			<NuxtLink to="/">Home</NuxtLink>
-			<NuxtLink to="/yacht">Yacht</NuxtLink>
-			<NuxtLink to="/freecell">Free Cell</NuxtLink>
-			<NuxtLink to="/klondike">Klondike</NuxtLink>
-			<NuxtLink to="/codebreaker">Code Breaker</NuxtLink>
-			<NuxtLink to="/guessword">Guess Word</NuxtLink>
-			<NuxtLink to="/seabattle">Sea Battle</NuxtLink>
-			<NuxtLink to="/hangman">Hang Man</NuxtLink>
-			<NuxtLink to="/tengrand">Ten Grand</NuxtLink>
-			<NuxtLink to="/concentration">Concentration</NuxtLink>
-			<NuxtLink to="/login">Sign In</NuxtLink>
-			<NuxtLink to="/register">Register</NuxtLink>
+	<main class="games-body">
+		<TabBar />
+		<div class="body-scroll">
+			<slot />
 		</div>
-		<slot />
-	</div>
+	</main>
 </template>
 
 <style lang="postcss">
-a {
-	@apply mr-4;
+.games-body {
+	@apply m-0 p-2 bg-indigo-200 h-screen max-h-screen flex flex-col;
+}
+.body-scroll {
+	@apply overflow-y-auto flex-grow;
 }
 </style>

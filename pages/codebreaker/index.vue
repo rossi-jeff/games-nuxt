@@ -1,5 +1,8 @@
 <template>
 	<div class="code-breaker-game">
+		<Head>
+			<Title>Code Breaker</Title>
+		</Head>
 		<!-- code breaker guess list-->
 		<CodeBreakerGuessList
 			:guesses="state.code_breaker.guesses"
@@ -137,3 +140,42 @@ const continueGame = (event: any) => {
 
 onMounted(() => getInProgress())
 </script>
+
+<style lang="postcss">
+div.code-breaker-game {
+	@apply mx-2 my-2;
+}
+.Black {
+	@apply bg-black border-black text-white;
+}
+.Blue {
+	@apply bg-blue-700 border-blue-900 text-white;
+}
+.Brown {
+	@apply bg-amber-800 border-amber-900 text-white;
+}
+.Green {
+	@apply bg-green-500 border-green-900;
+}
+.Orange {
+	@apply bg-orange-400 border-orange-900;
+}
+.Purple {
+	@apply bg-purple-600 border-purple-900;
+}
+.Red {
+	@apply bg-red-600 border-red-900;
+}
+.White {
+	@apply bg-white border-black;
+}
+.Yellow {
+	@apply bg-yellow-300 border-yellow-900;
+}
+div.scores-link a {
+	@apply font-bold text-indigo-600;
+}
+div.scores-link a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

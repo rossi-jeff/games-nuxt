@@ -74,13 +74,20 @@ const placeShips = () => {
 
 <style lang="postcss">
 div.sea-battle-game-options {
-	@apply border border-black rounded mx-2 my-1 p-2;
+	@apply border border-black rounded my-1 p-2 bg-slate-100;
 }
-label {
+div.sea-battle-game-options label {
 	@apply mr-2 font-bold w-24 inline-block;
 }
 div.axis-select-div,
 div.ship-type-div {
 	@apply mb-2;
+}
+div.sea-battle-game-options select,
+div.sea-battle-game-options button {
+	@apply border border-black rounded px-2 py-1 bg-slate-200;
+}
+div.sea-battle-game-options button:hover {
+	@apply bg-slate-600 text-white;
 }
 </style>

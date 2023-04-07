@@ -1,5 +1,9 @@
 <template>
 	<div class="ten-grand-scores">
+		<Head>
+			<Title>Ten Grand Scores</Title>
+		</Head>
+		<h3>Ten Grand Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<TenGrandScoresList
 				:items="state.Items"
@@ -14,6 +18,7 @@
 			@limit-changed="limitChanged"
 			@page-changed="pageChanged"
 		/>
+		<NuxtLink to="/tengrand"> &lt; Back to Game </NuxtLink>
 	</div>
 </template>
 
@@ -73,3 +78,18 @@ const followLink = (event: any) => {
 
 onMounted(() => initialLoad())
 </script>
+
+<style lang="postcss">
+div.ten-grand-scores {
+	@apply mx-2 my-2;
+}
+div.ten-grand-scores h3 {
+	@apply font-bold text-lg text-indigo-600;
+}
+div.ten-grand-scores a {
+	@apply font-bold text-indigo-600;
+}
+div.ten-grand-scores a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

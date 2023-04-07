@@ -1,7 +1,8 @@
 <template>
 	<div class="guess-word-game-options">
 		<div class="length-select-div">
-			<select v-model="state.Length">
+			<label for="word-length">Length</label>
+			<select name="word-lenhgth" v-model="state.Length">
 				<option
 					v-for="length of lengths"
 					:key="length"
@@ -31,9 +32,19 @@ const startGame = () => {
 
 <style lang="postcss">
 div.guess-word-game-options {
-	@apply border border-black rounded p-2 mx-2 my-1 flex flex-wrap;
+	@apply border border-black rounded p-2 my-1 flex flex-wrap bg-slate-100;
 }
 div.length-select-div {
 	@apply mr-4;
+}
+div.guess-word-game-options select,
+div.guess-word-game-options button {
+	@apply border border-black rounded px-2 py-1 bg-slate-200 mt-0;
+}
+div.guess-word-game-options button:hover {
+	@apply bg-slate-600 text-white;
+}
+div.guess-word-game-options label {
+	@apply inline-block font-bold mr-2;
 }
 </style>

@@ -1,5 +1,8 @@
 <template>
 	<div class="code-breaker-scores">
+		<Head>
+			<Title>Code Breaker Scores</Title>
+		</Head>
 		<div v-if="state.Items && state.Items.length > 0">
 			<CodeBreakeerScoresList
 				:items="state.Items"
@@ -73,3 +76,9 @@ const followLink = (event: any) => {
 
 onMounted(() => initialLoad())
 </script>
+
+<style lang="postcss">
+div.code-breaker-scores {
+	@apply mx-2 my-2;
+}
+</style>

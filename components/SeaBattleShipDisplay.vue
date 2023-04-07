@@ -38,7 +38,7 @@ div.ship-icon {
 	@apply flex flex-wrap justify-center;
 }
 div.ship-icon div {
-	@apply w-8 h-8 bg-gray-200 text-center;
+	@apply w-8 h-8 bg-slate-300 text-center;
 }
 div.ship-type {
 	@apply font-bold text-center;

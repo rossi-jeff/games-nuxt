@@ -1,5 +1,9 @@
 <template>
 	<div class="free-cell-scores">
+		<Head>
+			<Title>Free Cell Scores</Title>
+		</Head>
+		<h3>Free Cell Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<FreeCellScoresList :items="state.Items" />
 		</div>
@@ -10,6 +14,7 @@
 			@limit-changed="limitChanged"
 			@page-changed="pageChanged"
 		/>
+		<NuxtLink to="/freecell"> &lt; Back to Game </NuxtLink>
 	</div>
 </template>
 
@@ -63,3 +68,18 @@ const initialLoad = async () => {
 
 onMounted(() => initialLoad())
 </script>
+
+<style lang="postcss">
+div.free-cell-scores {
+	@apply mx-2 my-2;
+}
+div.free-cell-scores h3 {
+	@apply font-bold text-lg text-indigo-600;
+}
+div.free-cell-scores a {
+	@apply font-bold text-indigo-600;
+}
+div.free-cell-scores a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

@@ -1,5 +1,8 @@
 <template>
 	<div class="klondike-game" v-if="state.rendered">
+		<Head>
+			<Title>Klondike</Title>
+		</Head>
 		<div class="header-row">
 			<div class="buttons">
 				<button @click="deal" v-if="state.status != GameStatus.Playing">
@@ -737,7 +740,7 @@ onMounted(() => deck.preload())
 
 <style lang="postcss">
 div.klondike-game {
-	@apply p-2;
+	@apply my-2;
 }
 div.header-row {
 	@apply mx-2 flex flex-wrap justify-between mb-2;
@@ -755,11 +758,11 @@ div.top-row-right {
 div.top-row-right div.ace-cell {
 	@apply ml-4;
 }
-div.tableau,
-div.stock,
-div.waste,
-div.ace-cell {
-	@apply w-28 h-36 p-0 border border-dashed border-black rounded text-center relative;
+div.klondike-game div.tableau,
+div.klondike-game div.stock,
+div.klondike-game div.waste,
+div.klondike-game div.ace-cell {
+	@apply w-28 h-36 p-0 border border-dashed border-indigo-900 bg-indigo-300 rounded text-center relative;
 }
 div.stock {
 	@apply mr-4;
@@ -773,10 +776,19 @@ div.over {
 div.ace-cell img.playing-card-img {
 	@apply cursor-pointer;
 }
-button {
-	@apply border border-black rounded my-1 px-2 py-1;
+div.klondike-game button {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
 }
-button:hover {
-	@apply bg-yellow-200;
+div.klondike-game button:hover {
+	@apply bg-slate-600 text-white;
+}
+div.klondike-game div.scores-link {
+	@apply mx-2;
+}
+div.scores-link a {
+	@apply font-bold text-indigo-600;
+}
+div.scores-link a:hover {
+	@apply underline text-indigo-900;
 }
 </style>

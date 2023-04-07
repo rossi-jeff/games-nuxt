@@ -1,5 +1,9 @@
 <template>
 	<div class="hang-man-scores">
+		<Head>
+			<Title>Hang Man Scores</Title>
+		</Head>
+		<h3>Hang Man Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<HangManScoresList
 				:items="state.Items"
@@ -14,6 +18,7 @@
 			@limit-changed="limitChanged"
 			@page-changed="pageChanged"
 		/>
+		<NuxtLink to="/hangman"> &lt; Back to Game </NuxtLink>
 	</div>
 </template>
 
@@ -73,3 +78,18 @@ const followLink = (event: any) => {
 
 onMounted(() => initialLoad())
 </script>
+
+<style lang="postcss">
+div.hang-man-scores {
+	@apply mx-2 my-2;
+}
+div.hang-man-scores h3 {
+	@apply font-bold text-lg text-indigo-600;
+}
+div.hang-man-scores a {
+	@apply font-bold text-indigo-600;
+}
+div.hang-man-scores a:hover {
+	@apply underline text-indigo-900;
+}
+</style>

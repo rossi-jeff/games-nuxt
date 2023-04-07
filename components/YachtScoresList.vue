@@ -27,13 +27,22 @@ const followLink = (id: number) => {
 </script>
 
 <style lang="postcss">
+div.yacht-scores-list {
+	@apply my-2;
+}
 div.yacht-header {
-	@apply flex flex-wrap justify-between mx-2 font-bold bg-gray-200 mb-1 px-1;
+	@apply flex flex-wrap justify-between font-bold bg-slate-200 mb-1 px-1;
 }
 div.yacht-score {
-	@apply flex flex-wrap mx-2 border border-dashed border-b-gray-500;
+	@apply flex flex-wrap border border-dashed border-b-gray-500;
 }
 div.user {
 	@apply flex-grow pl-2 text-center;
+}
+div.yacht-scores-list button {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
+}
+div.yacht-scores-list button:hover {
+	@apply bg-slate-600 text-white;
 }
 </style>
