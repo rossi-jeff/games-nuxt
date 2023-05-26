@@ -1,8 +1,15 @@
 <template>
 	<div class="klondike-game" v-if="state.rendered">
+
 		<Head>
 			<Title>Klondike</Title>
 		</Head>
+		<div class="flex flex-wrap justify-between pl-2">
+			<h1>Klondike</h1>
+			<div class="scores-link">
+				<NuxtLink to="/klondike/scores">See Top Scores</NuxtLink>
+			</div>
+		</div>
 		<div class="header-row">
 			<div class="buttons">
 				<button @click="deal" v-if="state.status != GameStatus.Playing">
@@ -27,207 +34,65 @@
 		<div class="top-row">
 			<div class="top-row-left">
 				<div class="stock" id="stock" @click="stockCellClicked">
-					<PlayingCard
-						v-for="card of state.stock.columns[0].cards"
-						:key="card.id"
-						:card="card"
-						:level="0"
-						from="stock"
-						@click="stockCardClicked"
-					/>
+					<PlayingCard v-for="card of state.stock.columns[0].cards" :key="card.id" :card="card" :level="0" from="stock"
+						@click="stockCardClicked" />
 				</div>
 				<div class="waste" id="waste">
-					<PlayingCard
-						v-for="card of state.waste.columns[0].cards"
-						:key="card.id"
-						:card="card"
-						:level="0"
-						from="waste"
-						@drag-start="dragStart"
-					/>
+					<PlayingCard v-for="card of state.waste.columns[0].cards" :key="card.id" :card="card" :level="0" from="waste"
+						@drag-start="dragStart" />
 				</div>
 			</div>
 			<div class="top-row-right">
-				<div
-					class="ace-cell"
-					id="ace-cell-0"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.aces.columns[0].cards"
-						:key="card.id"
-						:card="card"
-						:level="0"
-						from="ace-cell-0"
-					/>
+				<div class="ace-cell" id="ace-cell-0" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.aces.columns[0].cards" :key="card.id" :card="card" :level="0"
+						from="ace-cell-0" />
 				</div>
-				<div
-					class="ace-cell"
-					id="ace-cell-1"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.aces.columns[1].cards"
-						:key="card.id"
-						:card="card"
-						:level="0"
-						from="ace-cell-1"
-					/>
+				<div class="ace-cell" id="ace-cell-1" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.aces.columns[1].cards" :key="card.id" :card="card" :level="0"
+						from="ace-cell-1" />
 				</div>
-				<div
-					class="ace-cell"
-					id="ace-cell-2"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.aces.columns[2].cards"
-						:key="card.id"
-						:card="card"
-						:level="0"
-						from="ace-cell-2"
-					/>
+				<div class="ace-cell" id="ace-cell-2" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.aces.columns[2].cards" :key="card.id" :card="card" :level="0"
+						from="ace-cell-2" />
 				</div>
-				<div
-					class="ace-cell"
-					id="ace-cell-3"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.aces.columns[3].cards"
-						:key="card.id"
-						:card="card"
-						:level="0"
-						from="ace-cell-3"
-					/>
+				<div class="ace-cell" id="ace-cell-3" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.aces.columns[3].cards" :key="card.id" :card="card" :level="0"
+						from="ace-cell-3" />
 				</div>
 			</div>
 		</div>
 		<div class="bottom-row">
-			<div
-				class="tableau"
-				id="tableau-0"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[0].cards"
-					:key="card.id"
-					:card="card"
-					:level="level"
-					from="tableau-0"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-0" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[0].cards" :key="card.id" :card="card" :level="level"
+					from="tableau-0" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-1"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[1].cards"
-					:key="card.id"
-					:card="card"
-					:level="level"
-					from="tableau-1"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-1" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[1].cards" :key="card.id" :card="card" :level="level"
+					from="tableau-1" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-2"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[2].cards"
-					:key="card.id"
-					:card="card"
-					:level="level"
-					from="tableau-2"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-2" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[2].cards" :key="card.id" :card="card" :level="level"
+					from="tableau-2" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-3"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[3].cards"
-					:key="card.id"
-					:card="card"
-					:level="level"
-					from="tableau-3"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-3" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[3].cards" :key="card.id" :card="card" :level="level"
+					from="tableau-3" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-4"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[4].cards"
-					:key="card.id"
-					:card="card"
-					:level="level"
-					from="tableau-4"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-4" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[4].cards" :key="card.id" :card="card" :level="level"
+					from="tableau-4" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-5"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[5].cards"
-					:key="card.id"
-					:card="card"
-					:level="level"
-					from="tableau-5"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-5" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[5].cards" :key="card.id" :card="card" :level="level"
+					from="tableau-5" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-6"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[6].cards"
-					:key="card.id"
-					:card="card"
-					:level="level"
-					from="tableau-6"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-6" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[6].cards" :key="card.id" :card="card" :level="level"
+					from="tableau-6" @drag-start="dragStart" />
 			</div>
 		</div>
-		<!-- scores link -->
-		<div class="scores-link">
-			<NuxtLink to="/klondike/scores">See Top Scores</NuxtLink>
-		</div>
+		<!-- directions -->
+		<KlondikeDirections v-if="state.status != GameStatus.Playing" class="mx-2" />
 	</div>
 </template>
 
@@ -467,7 +332,7 @@ const canDropTableau = (from: string, cardId: number, idx: number) => {
 		return (
 			deck.color(lastCard) != deck.color(draggedCard) &&
 			deck.faces.indexOf(draggedCard.face) + 1 ==
-				deck.faces.indexOf(lastCard.face)
+			deck.faces.indexOf(lastCard.face)
 		)
 	} else if (draggedCard) {
 		return draggedCard.face == 'king'
@@ -483,7 +348,7 @@ const canDropAces = (from: string, cardId: number, idx: number) => {
 		return (
 			lastCard.suit == draggedCard.suit &&
 			deck.faces.indexOf(draggedCard.face) ==
-				deck.faces.indexOf(lastCard.face) + 1
+			deck.faces.indexOf(lastCard.face) + 1
 		)
 	} else if (draggedCard) {
 		return draggedCard.face == 'ace'
@@ -690,7 +555,7 @@ const autoMoveCard = () => {
 				lastCard &&
 				lastCard.suit == lowestCard.suit &&
 				deck.faces.indexOf(lowestCard.face) ==
-					deck.faces.indexOf(lastCard.face) + 1
+				deck.faces.indexOf(lastCard.face) + 1
 			) {
 				aceIdx = i
 			}
@@ -742,52 +607,67 @@ onMounted(() => deck.preload())
 div.klondike-game {
 	@apply my-2;
 }
+
 div.header-row {
 	@apply mx-2 flex flex-wrap justify-between mb-2;
 }
+
 div.top-row {
 	@apply flex flex-wrap justify-between mx-2 mb-4;
 }
+
 div.bottom-row {
 	@apply flex flex-wrap justify-between mx-2 mb-4;
 }
+
 div.top-row-left,
 div.top-row-right {
 	@apply flex flex-wrap justify-between;
 }
+
 div.top-row-right div.ace-cell {
 	@apply ml-4;
 }
+
 div.klondike-game div.tableau,
 div.klondike-game div.stock,
 div.klondike-game div.waste,
 div.klondike-game div.ace-cell {
 	@apply w-28 h-36 p-0 border border-dashed border-indigo-900 bg-indigo-300 rounded text-center relative;
 }
+
 div.stock {
 	@apply mr-4;
 }
+
 div.stock img.playing-card-img {
 	@apply cursor-pointer;
 }
+
 div.over {
 	border: dashed red !important;
 }
+
 div.ace-cell img.playing-card-img {
 	@apply cursor-pointer;
 }
+
 div.klondike-game button {
 	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
 }
+
 div.klondike-game button:hover {
 	@apply bg-slate-600 text-white;
 }
+
 div.klondike-game div.scores-link {
 	@apply mx-2;
 }
+
 div.scores-link a {
 	@apply font-bold text-indigo-600;
 }
+
 div.scores-link a:hover {
 	@apply underline text-indigo-900;
 }

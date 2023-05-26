@@ -1,67 +1,41 @@
 <template>
 	<div class="sea-battle-game">
+
 		<Head>
 			<Title>Sea Battle</Title>
 		</Head>
+		<div class="flex flex-wrap justify-between pl-2">
+			<h1>Sea Battle</h1>
+			<div class="scores-link">
+				<NuxtLink to="/seabattle/scores">See Top Scores</NuxtLink>
+			</div>
+		</div>
 		<!-- player turn -->
-		<SeaBattlePlayerTurn
-			:turns="state.playerTurns"
-			:ships="state.opponentShips"
-			:axis="state.Axis"
-			:fired="state.fired.player"
-			:status="state.status"
-			v-if="
-				state.status == GameStatus.Playing &&
+		<SeaBattlePlayerTurn :turns="state.playerTurns" :ships="state.opponentShips" :axis="state.Axis"
+			:fired="state.fired.player" :status="state.status" v-if="state.status == GameStatus.Playing &&
 				state.shipsToPlace.length == 0 &&
 				state.mode == Navy.Player &&
 				state.visible.player
-			"
-			@toggle="toggleMode"
-			@fire="playerFire"
-		/>
+				" @toggle="toggleMode" @fire="playerFire" />
 		<!-- opponent turn -->
-		<SeaBattleOpponentTurn
-			:turns="state.opponentTurns"
-			:ships="state.playerShips"
-			:axis="state.Axis"
-			:fired="state.fired.opponent"
-			:status="state.status"
-			v-if="
-				state.status == GameStatus.Playing &&
+		<SeaBattleOpponentTurn :turns="state.opponentTurns" :ships="state.playerShips" :axis="state.Axis"
+			:fired="state.fired.opponent" :status="state.status" v-if="state.status == GameStatus.Playing &&
 				state.shipsToPlace.length == 0 &&
 				state.mode == Navy.Opponent &&
 				state.visible.opponent
-			"
-			@toggle="toggleMode"
-			@fire="opponentFire"
-		/>
+				" @toggle="toggleMode" @fire="opponentFire" />
 		<!-- ship placement-->
-		<SeaBattleShipPlacement
-			:axis="state.Axis"
-			:ships-to-place="state.shipsToPlace"
-			v-if="
-				state.status == GameStatus.Playing &&
-				state.shipsToPlace &&
-				state.shipsToPlace.length > 0
-			"
-			@place-ship="placeShip"
-		/>
+		<SeaBattleShipPlacement :axis="state.Axis" :ships-to-place="state.shipsToPlace" v-if="state.status == GameStatus.Playing &&
+			state.shipsToPlace &&
+			state.shipsToPlace.length > 0
+			" @place-ship="placeShip" />
 		<!-- game options -->
-		<SeaBattleGameOptions
-			@place-ships="placeShips"
-			v-if="state.status != GameStatus.Playing"
-		/>
+		<SeaBattleGameOptions @place-ships="placeShips" v-if="state.status != GameStatus.Playing" />
 		<!-- in progress -->
-		<SeaBattleScoresList
-			:items="state.inProgress"
-			label="Continue"
-			v-if="state.session.SignedIn && state.status != GameStatus.Playing"
-			@follow-link="continueGame"
-		/>
-		<!-- scores link -->
-		<div class="scores-link">
-			<NuxtLink to="/seabattle/scores">See Top Scores</NuxtLink>
-		</div>
+		<SeaBattleScoresList :items="state.inProgress" label="Continue"
+			v-if="state.session.SignedIn && state.status != GameStatus.Playing" @follow-link="continueGame" />
+		<!-- directions -->
+		<SeaBattleDirections v-if="state.status != GameStatus.Playing" />
 	</div>
 </template>
 
@@ -342,5 +316,13 @@ onMounted(() => getInProgress())
 <style lang="postcss">
 div.sea-battle-game {
 	@apply mx-2 my-2;
+}
+
+div.sea-battle-game button {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
+}
+
+div.sea-battle-game button:hover {
+	@apply bg-slate-600 text-white;
 }
 </style>
