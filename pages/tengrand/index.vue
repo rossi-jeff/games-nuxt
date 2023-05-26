@@ -1,37 +1,30 @@
 <template>
 	<div class="ten-grand-game">
+
 		<Head>
 			<Title>Ten Grand</Title>
 		</Head>
+		<div class="flex flex-wrap justify-between">
+			<h1>Ten Grand</h1>
+			<div class="scores-link">
+				<NuxtLink to="/tengrand/scores">See Top Scores</NuxtLink>
+			</div>
+		</div>
 		<!-- turn form -->
-		<TenGrandTurnForm
-			:ten-grand="state.ten_grand"
-			:ten-grand-turn="state.ten_grand_turn"
-			v-if="state.status == GameStatus.Playing"
-			@score-options="scoreOptions"
-		/>
+		<TenGrandTurnForm :ten-grand="state.ten_grand" :ten-grand-turn="state.ten_grand_turn"
+			v-if="state.status == GameStatus.Playing" @score-options="scoreOptions" />
 		<!-- new game button-->
 		<div v-if="state.status != GameStatus.Playing">
 			<button @click="newGame">New Game</button>
 		</div>
 		<!-- turn list -->
-		<TenGrandTurnList
-			:turns="state.ten_grand.turns"
-			v-if="
-				state.ten_grand && state.ten_grand.turns && state.ten_grand.turns.length
-			"
-		/>
+		<TenGrandTurnList :turns="state.ten_grand.turns" v-if="state.ten_grand && state.ten_grand.turns && state.ten_grand.turns.length
+			" />
 		<!-- in progress -->
-		<TenGrandScoresList
-			:items="state.inProgress"
-			v-if="state.session.SignedIn && state.status != GameStatus.Playing"
-			label="Continue"
-			@follow-link="continueGame"
-		/>
-		<!-- scores link -->
-		<div class="scores-link">
-			<NuxtLink to="/tengrand/scores">See Top Scores</NuxtLink>
-		</div>
+		<TenGrandScoresList :items="state.inProgress" v-if="state.session.SignedIn && state.status != GameStatus.Playing"
+			label="Continue" @follow-link="continueGame" />
+		<!-- directions -->
+		<TenGrandDirections v-if="state.status != GameStatus.Playing" />
 	</div>
 </template>
 
@@ -135,9 +128,11 @@ onMounted(() => getInProgress())
 div.ten-grand-game {
 	@apply mx-2 my-2;
 }
+
 div.ten-grand-game button {
 	@apply border border-black rounded px-2 py-1 bg-slate-200;
 }
+
 div.ten-grand-game button:hover {
 	@apply bg-slate-600 text-white;
 }

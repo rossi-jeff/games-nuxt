@@ -32,8 +32,19 @@
 	@apply border border-slate-700 rounded p-2;
 }
 
-.scoring-grid-row {
-	@apply flex flex-wrap border-b border-dotted border-slate-500 justify-between;
+.scoring-grid-row,
+.individual,
+.multiple {
+	@apply flex flex-wrap border-b border-dotted border-slate-500 justify-between px-2;
+}
+
+.individual .score {
+	@apply w-48 text-right;
+}
+
+.individuals-header,
+.multiples-header {
+	@apply flex flex-wrap justify-between px-2 py-1 font-bold bg-indigo-400 text-black rounded my-2;
 }
 
 .scoring-grid-row .category {
