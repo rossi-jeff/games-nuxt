@@ -1,47 +1,33 @@
 <template>
 	<div class="guess-word-game">
+
 		<Head>
 			<Title>Guess Word</Title>
 		</Head>
-		<!-- guess list -->
-		<GuessWordGuessList
-			:guesses="state.guess_word.guesses"
-			v-if="state.guess_word.guesses && state.guess_word.guesses.length"
-		/>
-		<!-- guess form -->
-		<GuessWordGuessForm
-			:length="state.Length"
-			v-if="state.status == GameStatus.Playing"
-			@send-guess="sendGuess"
-		/>
-		<!-- hint list -->
-		<GuessWordHintList
-			:hints="state.hints"
-			:show-hints="state.showHints"
-			v-if="state.status == GameStatus.Playing"
-			@toggle-show="toggleHints"
-		/>
-		<!-- solution -->
-		<GuessWordSolution
-			:word="state.word"
-			v-if="state.status != GameStatus.Playing && state.word && state.word.id"
-		/>
-		<!-- game options -->
-		<GuessWordGameOptions
-			@start-game="reandomWord"
-			v-if="state.status != GameStatus.Playing"
-		/>
-		<!-- in progress -->
-		<GuessWordScoresList
-			:items="state.inProgress"
-			label="Continue"
-			v-if="state.session.SignedIn && state.status != GameStatus.Playing"
-			@follow-link="continueGame"
-		/>
-		<!-- scores link -->
-		<div class="scores-link">
-			<NuxtLink to="/guessword/scores">See Top Scores</NuxtLink>
+		<div class="flex flex-wrap justify-between">
+			<h1>Guess Word</h1>
+			<div class="scores-link">
+				<NuxtLink to="/guessword/scores">See Top Scores</NuxtLink>
+			</div>
+
 		</div>
+		<!-- guess list -->
+		<GuessWordGuessList :guesses="state.guess_word.guesses"
+			v-if="state.guess_word.guesses && state.guess_word.guesses.length" />
+		<!-- guess form -->
+		<GuessWordGuessForm :length="state.Length" v-if="state.status == GameStatus.Playing" @send-guess="sendGuess" />
+		<!-- hint list -->
+		<GuessWordHintList :hints="state.hints" :show-hints="state.showHints" v-if="state.status == GameStatus.Playing"
+			@toggle-show="toggleHints" />
+		<!-- solution -->
+		<GuessWordSolution :word="state.word" v-if="state.status != GameStatus.Playing && state.word && state.word.id" />
+		<!-- game options -->
+		<GuessWordGameOptions @start-game="reandomWord" v-if="state.status != GameStatus.Playing" />
+		<!-- in progress -->
+		<GuessWordScoresList :items="state.inProgress" label="Continue"
+			v-if="state.session.SignedIn && state.status != GameStatus.Playing" @follow-link="continueGame" />
+		<!--directions-->
+		<GuessWordDirections v-if="state.status != GameStatus.Playing" />
 	</div>
 </template>
 
@@ -245,5 +231,13 @@ onMounted(() => getInProgress())
 <style lang="postcss">
 div.guess-word-game {
 	@apply mx-2 my-2;
+}
+
+div.guess-word-game button {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
+}
+
+div.guess-word-game button:hover {
+	@apply bg-slate-600 text-white;
 }
 </style>

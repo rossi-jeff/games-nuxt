@@ -77,6 +77,6 @@ div.playing-card-wrapper {
 	@apply w-24 h-32 p-0;
 }
 img.playing-card-img {
-	@apply w-24 h-32 cursor-move;
+	@apply w-24 h-32 cursor-move left-2;
 }
 </style>
