@@ -1,36 +1,28 @@
 <template>
 	<div class="code-breaker-game">
+
 		<Head>
 			<Title>Code Breaker</Title>
 		</Head>
-		<!-- code breaker guess list-->
-		<CodeBreakerGuessList
-			:guesses="state.code_breaker.guesses"
-			v-if="state.code_breaker.guesses && state.code_breaker.guesses.length > 0"
-		/>
-		<!-- guess form -->
-		<CodeBreakerGuessForm
-			v-if="state.status && state.status == GameStatus.Playing"
-			:available="state.available"
-			:columns="state.columns"
-			@send-guess="sendGuess"
-		/>
-		<!-- new game options -->
-		<CodeBreakerGameOptions
-			v-if="!state.status || state.status != GameStatus.Playing"
-			@start-game="newGame"
-		/>
-		<!-- in progress -->
-		<CodeBreakeerScoresList
-			:items="state.inProgress"
-			label="Continue"
-			v-if="state.session.SignedIn && state.status != GameStatus.Playing"
-			@follow-link="continueGame"
-		/>
-		<!-- scores link -->
-		<div class="scores-link">
-			<NuxtLink to="/codebreaker/scores">See Top Scores</NuxtLink>
+		<div class="flex flex-wrap justify-between pl-2">
+			<h1>Code Breaker</h1>
+			<div class="scores-link">
+				<NuxtLink to="/codebreaker/scores">See Top Scores</NuxtLink>
+			</div>
 		</div>
+		<!-- code breaker guess list-->
+		<CodeBreakerGuessList :guesses="state.code_breaker.guesses"
+			v-if="state.code_breaker.guesses && state.code_breaker.guesses.length > 0" />
+		<!-- guess form -->
+		<CodeBreakerGuessForm v-if="state.status && state.status == GameStatus.Playing" :available="state.available"
+			:columns="state.columns" @send-guess="sendGuess" />
+		<!-- new game options -->
+		<CodeBreakerGameOptions v-if="!state.status || state.status != GameStatus.Playing" @start-game="newGame" />
+		<!-- in progress -->
+		<CodeBreakeerScoresList :items="state.inProgress" label="Continue"
+			v-if="state.session.SignedIn && state.status != GameStatus.Playing" @follow-link="continueGame" />
+		<!-- directions -->
+		<CodeBreakerDirections v-if="!state.status || state.status != GameStatus.Playing" />
 	</div>
 </template>
 
@@ -145,36 +137,55 @@ onMounted(() => getInProgress())
 div.code-breaker-game {
 	@apply mx-2 my-2;
 }
+
+div.code-breaker-game button {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
+}
+
+div.code-breaker-game button:hover {
+	@apply bg-slate-600 text-white;
+}
+
 .Black {
 	@apply bg-black border-black text-white;
 }
+
 .Blue {
 	@apply bg-blue-700 border-blue-900 text-white;
 }
+
 .Brown {
 	@apply bg-amber-800 border-amber-900 text-white;
 }
+
 .Green {
 	@apply bg-green-500 border-green-900;
 }
+
 .Orange {
 	@apply bg-orange-400 border-orange-900;
 }
+
 .Purple {
 	@apply bg-purple-600 border-purple-900;
 }
+
 .Red {
 	@apply bg-red-600 border-red-900;
 }
+
 .White {
 	@apply bg-white border-black;
 }
+
 .Yellow {
 	@apply bg-yellow-300 border-yellow-900;
 }
+
 div.scores-link a {
 	@apply font-bold text-indigo-600;
 }
+
 div.scores-link a:hover {
 	@apply underline text-indigo-900;
 }

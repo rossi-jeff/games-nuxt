@@ -1,8 +1,15 @@
 <template>
 	<div class="free-cell-game">
+
 		<Head>
 			<Title>Free Cell</Title>
 		</Head>
+		<div class="flex flex-wrap justify-between pl-2">
+			<h1>Free Cell</h1>
+			<div class="scores-link">
+				<NuxtLink to="/freecell/scores">See Top Scores</NuxtLink>
+			</div>
+		</div>
 		<div class="header-row">
 			<div class="buttons">
 				<button @click="deal" v-if="state.status != GameStatus.Playing">
@@ -26,268 +33,78 @@
 		</div>
 		<div class="top-row">
 			<div class="top-row-left">
-				<div
-					class="free-cell"
-					id="free-cell-0"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.free.columns[0].cards"
-						:key="card.id"
-						:card="card"
-						from="free-cell-0"
-						:level="0"
-						@drag-start="dragStart"
-					/>
+				<div class="free-cell" id="free-cell-0" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.free.columns[0].cards" :key="card.id" :card="card" from="free-cell-0"
+						:level="0" @drag-start="dragStart" />
 				</div>
-				<div
-					class="free-cell"
-					id="free-cell-1"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.free.columns[1].cards"
-						:key="card.id"
-						:card="card"
-						from="free-cell-1"
-						:level="0"
-						@drag-start="dragStart"
-					/>
+				<div class="free-cell" id="free-cell-1" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.free.columns[1].cards" :key="card.id" :card="card" from="free-cell-1"
+						:level="0" @drag-start="dragStart" />
 				</div>
-				<div
-					class="free-cell"
-					id="free-cell-2"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.free.columns[2].cards"
-						:key="card.id"
-						:card="card"
-						from="free-cell-2"
-						:level="0"
-						@drag-start="dragStart"
-					/>
+				<div class="free-cell" id="free-cell-2" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.free.columns[2].cards" :key="card.id" :card="card" from="free-cell-2"
+						:level="0" @drag-start="dragStart" />
 				</div>
-				<div
-					class="free-cell"
-					id="free-cell-3"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.free.columns[3].cards"
-						:key="card.id"
-						:card="card"
-						from="free-cell-3"
-						:level="0"
-						@drag-start="dragStart"
-					/>
+				<div class="free-cell" id="free-cell-3" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.free.columns[3].cards" :key="card.id" :card="card" from="free-cell-3"
+						:level="0" @drag-start="dragStart" />
 				</div>
 			</div>
 			<div class="top-row-right">
-				<div
-					class="ace-cell"
-					id="ace-cell-0"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.aces.columns[0].cards"
-						:key="card.id"
-						:card="card"
-						from="ace-cell-0"
-						:level="0"
-					/>
+				<div class="ace-cell" id="ace-cell-0" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.aces.columns[0].cards" :key="card.id" :card="card" from="ace-cell-0"
+						:level="0" />
 				</div>
-				<div
-					class="ace-cell"
-					id="ace-cell-1"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.aces.columns[1].cards"
-						:key="card.id"
-						:card="card"
-						from="ace-cell-1"
-						:level="0"
-					/>
+				<div class="ace-cell" id="ace-cell-1" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.aces.columns[1].cards" :key="card.id" :card="card" from="ace-cell-1"
+						:level="0" />
 				</div>
-				<div
-					class="ace-cell"
-					id="ace-cell-2"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.aces.columns[2].cards"
-						:key="card.id"
-						:card="card"
-						from="ace-cell-2"
-						:level="0"
-					/>
+				<div class="ace-cell" id="ace-cell-2" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.aces.columns[2].cards" :key="card.id" :card="card" from="ace-cell-2"
+						:level="0" />
 				</div>
-				<div
-					class="ace-cell"
-					id="ace-cell-3"
-					@dragover="dragOver"
-					@dragenter="dragEnter"
-					@drop="drop"
-				>
-					<PlayingCard
-						v-for="card of state.aces.columns[3].cards"
-						:key="card.id"
-						:card="card"
-						from="ace-cell-3"
-						:level="0"
-					/>
+				<div class="ace-cell" id="ace-cell-3" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+					<PlayingCard v-for="card of state.aces.columns[3].cards" :key="card.id" :card="card" from="ace-cell-3"
+						:level="0" />
 				</div>
 			</div>
 		</div>
 		<div class="bottom-row">
-			<div
-				class="tableau"
-				id="tableau-0"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[0].cards"
-					:key="card.id"
-					:card="card"
-					from="tableau-0"
-					:level="level"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-0" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[0].cards" :key="card.id" :card="card" from="tableau-0"
+					:level="level" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-1"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[1].cards"
-					:key="card.id"
-					:card="card"
-					from="tableau-1"
-					:level="level"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-1" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[1].cards" :key="card.id" :card="card" from="tableau-1"
+					:level="level" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-2"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[2].cards"
-					:key="card.id"
-					:card="card"
-					from="tableau-2"
-					:level="level"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-2" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[2].cards" :key="card.id" :card="card" from="tableau-2"
+					:level="level" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-3"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[3].cards"
-					:key="card.id"
-					:card="card"
-					from="tableau-3"
-					:level="level"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-3" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[3].cards" :key="card.id" :card="card" from="tableau-3"
+					:level="level" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-4"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[4].cards"
-					:key="card.id"
-					:card="card"
-					from="tableau-4"
-					:level="level"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-4" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[4].cards" :key="card.id" :card="card" from="tableau-4"
+					:level="level" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-5"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[5].cards"
-					:key="card.id"
-					:card="card"
-					from="tableau-5"
-					:level="level"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-5" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[5].cards" :key="card.id" :card="card" from="tableau-5"
+					:level="level" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-6"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[6].cards"
-					:key="card.id"
-					:card="card"
-					from="tableau-6"
-					:level="level"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-6" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[6].cards" :key="card.id" :card="card" from="tableau-6"
+					:level="level" @drag-start="dragStart" />
 			</div>
-			<div
-				class="tableau"
-				id="tableau-7"
-				@dragover="dragOver"
-				@dragenter="dragEnter"
-				@drop="drop"
-			>
-				<PlayingCard
-					v-for="(card, level) of state.tableau.columns[7].cards"
-					:key="card.id"
-					:card="card"
-					from="tableau-7"
-					:level="level"
-					@drag-start="dragStart"
-				/>
+			<div class="tableau" id="tableau-7" @dragover="dragOver" @dragenter="dragEnter" @drop="drop">
+				<PlayingCard v-for="(card, level) of state.tableau.columns[7].cards" :key="card.id" :card="card" from="tableau-7"
+					:level="level" @drag-start="dragStart" />
 			</div>
 		</div>
-		<!-- scores link -->
-		<div class="scores-link">
-			<NuxtLink to="/freecell/scores">See Top Scores</NuxtLink>
-		</div>
+		<!-- directions -->
+		<FreeCellDiections v-if="state.status != GameStatus.Playing" class="mx-2" />
 	</div>
 </template>
 
@@ -458,7 +275,7 @@ const setStatus = () => {
 				const descending =
 					deck.color(previous) != deck.color(current) &&
 					deck.faces.indexOf(current.face) ==
-						deck.faces.indexOf(previous.face) + 1
+					deck.faces.indexOf(previous.face) + 1
 				if (!descending) allDescending = false
 			}
 			previous = current
@@ -652,7 +469,7 @@ const canDropAces = (from: string, cardId: number, idx: number) => {
 		return (
 			lastCard.suit == draggedCard.suit &&
 			deck.faces.indexOf(draggedCard.face) ==
-				deck.faces.indexOf(lastCard.face) + 1
+			deck.faces.indexOf(lastCard.face) + 1
 		)
 	} else if (draggedCard && draggedCard.face == 'ace') return true
 	else return false
@@ -667,7 +484,7 @@ const canDropTableau = (from: string, cardId: number, idx: number) => {
 		return (
 			deck.color(draggedCard) != deck.color(lastCard) &&
 			deck.faces.indexOf(draggedCard.face) + 1 ==
-				deck.faces.indexOf(lastCard.face)
+			deck.faces.indexOf(lastCard.face)
 		)
 	} else return draggedCard ? true : false
 }
@@ -780,7 +597,7 @@ const autoMoveCard = () => {
 				lastCard &&
 				lastCard.suit == lowestCard.suit &&
 				deck.faces.indexOf(lowestCard.face) ==
-					deck.faces.indexOf(lastCard.face) + 1
+				deck.faces.indexOf(lastCard.face) + 1
 			) {
 				aceIdx = i
 			}
@@ -820,54 +637,66 @@ onMounted(() => deck.preload())
 div.free-cell-game {
 	@apply my-2;
 }
+
 div.header-row {
 	@apply flex flex-wrap justify-between mb-2;
 }
+
 div.buttons button {
 	@apply mr-2;
 }
+
 div.top-row {
 	@apply flex flex-wrap justify-between mb-4;
 }
+
 div.bottom-row {
 	@apply flex flex-wrap justify-between mb-4;
 }
+
 div.top-row-left,
 div.top-row-right {
 	@apply flex flex-wrap justify-between;
 }
+
 div.top-row-left div.free-cell {
 	@apply mr-4;
 }
+
 div.top-row-right div.ace-cell {
 	@apply ml-4;
 }
+
 div.free-cell-game div.tableau,
 div.free-cell-game div.free-cell,
 div.free-cell-game div.ace-cell {
 	@apply w-28 h-36 p-0 border border-dashed border-indigo-900 bg-indigo-300 rounded text-center relative;
 }
+
 div.over {
 	border: dashed red !important;
 }
+
 div.ace-cell img.playing-card-img {
 	@apply cursor-pointer;
 }
+
 div.free-cell-game button {
 	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
 }
+
 div.free-cell-game button:hover {
 	@apply bg-slate-600 text-white;
 }
+
 div.free-cell-game div.scores-link {
 	@apply mx-2;
 }
-div.free-cell-game div.scores-link {
-	@apply mx-2;
-}
+
 div.scores-link a {
 	@apply font-bold text-indigo-600;
 }
+
 div.scores-link a:hover {
 	@apply underline text-indigo-900;
 }

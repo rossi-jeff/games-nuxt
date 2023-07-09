@@ -1,8 +1,15 @@
 <template>
 	<div class="concentration-game">
+
 		<Head>
 			<Title>Concentration</Title>
 		</Head>
+		<div class="flex flex-wrap justify-between">
+			<h1>Concentration</h1>
+			<div class="scores-link">
+				<NuxtLink to="/concentration/scores">See Top Scores</NuxtLink>
+			</div>
+		</div>
 		<div class="concentraton-header">
 			<div>
 				<button @click="deal" v-if="state.status != GameStatus.Playing">
@@ -29,24 +36,12 @@
 			</div>
 		</div>
 		<div class="concentration-cards" v-if="state.status == GameStatus.Playing">
-			<div
-				class="card-wrapper"
-				v-for="(card, index) of state.deck.cards"
-				:key="card.id"
-			>
-				<PlayingCard
-					:card="card"
-					:level="0"
-					:index="index"
-					from="concentration"
-					@click="cardClicked"
-				/>
+			<div class="card-wrapper" v-for="(card, index) of state.deck.cards" :key="card.id">
+				<PlayingCard :card="card" :level="0" :index="index" from="concentration" @click="cardClicked" />
 			</div>
 		</div>
-		<!-- scores link -->
-		<div class="scores-link">
-			<NuxtLink to="/concentration/scores">See Top Scores</NuxtLink>
-		</div>
+		<!-- directions -->
+		<ConcentrationDirections v-if="state.status != GameStatus.Playing" />
 	</div>
 </template>
 
@@ -238,22 +233,36 @@ onMounted(() => deck.preload())
 div.concentration-game {
 	@apply mx-2 my-2;
 }
+
 div.concentraton-header {
 	@apply flex flex-wrap justify-between;
 }
+
 div.concentraton-header button {
 	@apply border border-black rounded px-2 py-1 bg-slate-200 mr-2;
 }
+
 div.concentraton-header button:hover {
 	@apply bg-slate-600 text-white;
 }
+
 div.concentration-cards {
 	@apply flex flex-wrap my-2 h-fit;
 }
+
 div.card-wrapper {
 	@apply w-28 h-36 relative;
 }
+
 div.card-wrapper img {
 	@apply cursor-pointer;
+}
+
+div.concentration-game button {
+	@apply border border-black rounded px-2 py-1 bg-slate-200;
+}
+
+div.concentration-game button:hover {
+	@apply bg-slate-600 text-white;
 }
 </style>

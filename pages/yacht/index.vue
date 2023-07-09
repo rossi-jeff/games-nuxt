@@ -1,69 +1,46 @@
 <template>
 	<div class="yacht-game">
+
 		<Head>
 			<Title>Yacht</Title>
 		</Head>
-		<h1>Yacht</h1>
-		<div
-			v-show="
-				state.yacht.id != undefined &&
-				state.yacht.NumTurns != undefined &&
-				state.yacht.NumTurns < 12
-			"
-		>
+		<div class="flex flex-wrap justify-between">
+			<h1>Yacht</h1>
+			<NuxtLink to="/yacht/scores">See Top Scores</NuxtLink>
+		</div>
+
+		<div v-show="state.yacht.id != undefined &&
+			state.yacht.NumTurns != undefined &&
+			state.yacht.NumTurns < 12
+			">
 			<!-- first roll -->
-			<div
-				v-if="
-					state.turn &&
-					state.turn.RollOne != undefined &&
-					state.turn.RollOne != '' &&
-					state.flags.showOne
-				"
-			>
-				<YachtRoll
-					:dieRoll="state.turn.RollOne"
-					title="First Roll"
-					label="Second Roll"
-					:flag="state.flags.rollTwo"
-					@roll="secondRoll"
-				/>
+			<div v-if="state.turn &&
+				state.turn.RollOne != undefined &&
+				state.turn.RollOne != '' &&
+				state.flags.showOne
+				">
+				<YachtRoll :dieRoll="state.turn.RollOne" title="First Roll" label="Second Roll" :flag="state.flags.rollTwo"
+					@roll="secondRoll" />
 			</div>
 			<div v-else>
 				<button @click="firstRoll">First Roll</button>
 			</div>
 			<!-- scond roll-->
-			<div
-				v-if="
-					state.turn &&
-					state.turn.RollTwo != undefined &&
-					state.turn.RollTwo != '' &&
-					state.flags.showTwo
-				"
-			>
-				<YachtRoll
-					:dieRoll="state.turn.RollTwo"
-					title="Second Roll"
-					label="Third Roll"
-					:flag="state.flags.rollThree"
-					@roll="thirdRoll"
-				/>
+			<div v-if="state.turn &&
+				state.turn.RollTwo != undefined &&
+				state.turn.RollTwo != '' &&
+				state.flags.showTwo
+				">
+				<YachtRoll :dieRoll="state.turn.RollTwo" title="Second Roll" label="Third Roll" :flag="state.flags.rollThree"
+					@roll="thirdRoll" />
 			</div>
 			<!-- third roll -->
-			<div
-				v-if="
-					state.turn &&
-					state.turn.RollThree != undefined &&
-					state.turn.RollThree != '' &&
-					state.flags.showThree
-				"
-			>
-				<YachtRoll
-					:dieRoll="state.turn.RollThree"
-					title="Third Roll"
-					label=""
-					:flag="true"
-					@roll="() => null"
-				/>
+			<div v-if="state.turn &&
+				state.turn.RollThree != undefined &&
+				state.turn.RollThree != '' &&
+				state.flags.showThree
+				">
+				<YachtRoll :dieRoll="state.turn.RollThree" title="Third Roll" label="" :flag="true" @roll="() => null" />
 			</div>
 		</div>
 		<!-- scoring options-->
@@ -71,9 +48,7 @@
 			<YachtScoreOptions :options="state.options" @score="scoreTurn" />
 		</div>
 		<!-- score card -->
-		<div
-			v-if="state.yacht && state.yacht.turns && state.yacht.turns.length > 0"
-		>
+		<div v-if="state.yacht && state.yacht.turns && state.yacht.turns.length > 0">
 			<YachtScoreCard :turns="state.yacht.turns" :total="state.yacht.Total" />
 		</div>
 		<!-- new game -->
@@ -81,20 +56,12 @@
 			<button @click="newGame">New Game</button>
 		</div>
 		<!-- in progress -->
-		<YachtScoresList
-			:items="state.inProgress"
-			v-if="
-				state.session.SignedIn &&
-				((state.yacht.NumTurns && state.yacht.NumTurns >= 12) ||
-					!state.yacht.NumTurns)
-			"
-			label="Continue"
-			@follow-link="continueGame"
-		/>
-		<!-- scores link -->
-		<div class="scores-link">
-			<NuxtLink to="/yacht/scores">See Top Scores</NuxtLink>
-		</div>
+		<YachtScoresList :items="state.inProgress" v-if="state.session.SignedIn &&
+			((state.yacht.NumTurns && state.yacht.NumTurns >= 12) ||
+				!state.yacht.NumTurns)
+			" label="Continue" @follow-link="continueGame" />
+		<!-- directions-->
+		<YachtDirections v-if="state && (!state.yacht.id || state.yacht.NumTurns == 12)" />
 	</div>
 </template>
 
@@ -251,25 +218,32 @@ onMounted(() => getInProgress())
 div.yacht-game {
 	@apply mx-2 my-2;
 }
+
 h1 {
 	@apply font-bold text-xl mb-2 text-indigo-600;
 }
+
 div.yacht {
 	@apply p-2;
 }
+
 div.yacht-roll,
 div.yacht-score-options {
 	@apply mb-2;
 }
+
 div.yacht-game button {
 	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
 }
+
 div.yacht-game button:hover {
 	@apply bg-slate-600 text-white;
 }
+
 div.yacht-game a {
 	@apply font-bold text-indigo-600;
 }
+
 div.yacht-game a:hover {
 	@apply underline text-indigo-900;
 }

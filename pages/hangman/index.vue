@@ -1,43 +1,31 @@
 <template>
 	<div class="hang-man-game">
+
 		<Head>
 			<Title>Hang Man</Title>
 		</Head>
+		<div class="flex flex-wrap justify-between">
+			<h1>Hang Man</h1>
+			<div class="scores-link">
+				<NuxtLink to="/hangman/scores">See Top Scores</NuxtLink>
+			</div>
+		</div>
 		<!-- hang man image -->
 		<HangManImage :wrong="state.hang_man.Wrong" />
 		<!-- word display-->
-		<HangManWordDisplay
-			:display="state.Display"
-			v-if="state.status == GameStatus.Playing"
-		/>
+		<HangManWordDisplay :display="state.Display" v-if="state.status == GameStatus.Playing" />
 		<!-- letter - buttons -->
-		<HangManLetterButtons
-			:correct="state.hang_man.Correct"
-			:wrong="state.hang_man.Wrong"
-			v-if="state.status == GameStatus.Playing"
-			@guess-letter="guessLetter"
-		/>
+		<HangManLetterButtons :correct="state.hang_man.Correct" :wrong="state.hang_man.Wrong"
+			v-if="state.status == GameStatus.Playing" @guess-letter="guessLetter" />
 		<!-- lost word display-->
-		<HangManLost
-			v-if="state.status == GameStatus.Lost && state.word"
-			:word="state.word"
-		/>
+		<HangManLost v-if="state.status == GameStatus.Lost && state.word" :word="state.word" />
 		<!-- game options -->
-		<HangManGameOptions
-			@get-word="randomWord"
-			v-if="state.status != GameStatus.Playing"
-		/>
+		<HangManGameOptions @get-word="randomWord" v-if="state.status != GameStatus.Playing" />
 		<!-- in progress -->
-		<HangManScoresList
-			:items="state.inProgress"
-			label="Continue"
-			v-if="state.session.SignedIn && state.status != GameStatus.Playing"
-			@follow-link="continueGame"
-		/>
-		<!-- scores link -->
-		<div class="scores-link">
-			<NuxtLink to="/hangman/scores">See Top Scores</NuxtLink>
-		</div>
+		<HangManScoresList :items="state.inProgress" label="Continue"
+			v-if="state.session.SignedIn && state.status != GameStatus.Playing" @follow-link="continueGame" />
+		<!-- directions -->
+		<HangManDirections v-if="state.status != GameStatus.Playing" />
 	</div>
 </template>
 
@@ -195,5 +183,13 @@ onMounted(() => getInProgress())
 <style lang="postcss">
 div.hang-man-game {
 	@apply mx-2 my-2;
+}
+
+div.hang-man-game button {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
+}
+
+div.hang-man-game button:hover {
+	@apply bg-slate-600 text-white;
 }
 </style>
