@@ -40,7 +40,7 @@
           />
         </div>
         <div>
-          <div>
+          <div class="mb-2">
             <label for="Row">Row</label>
             <select name="Row" v-model="state.Row">
               <option v-for="row of rows" :key="row" :value="row">
@@ -48,7 +48,7 @@
               </option>
             </select>
           </div>
-          <div>
+          <div class="mb-2">
             <label for="Column">Column</label>
             <select name="Column" v-model="state.Column">
               <option v-for="column of columns" :key="column" :value="column">
