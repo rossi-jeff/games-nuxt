@@ -1,5 +1,8 @@
 <template>
 	<div class="poker-squares-game">
+		<Head>
+			<Title>Poker Squares</Title>
+		</Head>
 		<div class="flex flex-wrap justify-between">
 			<h1>Poker Squares</h1>
 			<div class="scores-link">
