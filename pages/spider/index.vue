@@ -1,6 +1,11 @@
 <template>
 	<div class="spider-game">
-		<h1>Spider</h1>
+		<div class="flex flex-wrap justify-between pl-2">
+			<h1>Spider</h1>
+			<div class="scores-link">
+				<NuxtLink to="/spider/scores">See Top Scores</NuxtLink>
+			</div>
+		</div>
 		<div class="header-row">
 			<div class="buttons">
 				<div v-if="state.spider.Status != 'Playing'">
@@ -367,7 +372,7 @@ const updateGame = async (Status: GameStatus) => {
 	if (!state.spider.id) return
 	const { moves: Moves, elapsed: Elapsed } = state
 	try {
-		const result = await fetch(`${apiUrl}/api/klondike/${state.spider.id}`, {
+		const result = await fetch(`${apiUrl}/api/spider/${state.spider.id}`, {
 			method: 'PATCH',
 			body: JSON.stringify({ Moves, Elapsed, Status }),
 			headers: buildRequestHeaders(state.session),
@@ -617,6 +622,14 @@ onMounted(() => state.deck.preload())
 </script>
 
 <style lang="postcss">
+div.spider-game {
+	@apply my-2;
+}
+
+div.header-row {
+	@apply mx-2 flex flex-wrap justify-between mb-2;
+}
+
 div.top-row {
 	@apply flex flex-wrap justify-between mx-2 mb-4;
 }
@@ -641,5 +654,25 @@ div.stock {
 }
 select {
 	@apply px-2 py-1 border border-black rounded mr-2;
+}
+
+div.spider-game button {
+	@apply border border-black rounded my-1 px-2 py-1 bg-slate-200;
+}
+
+div.spider-game button:hover {
+	@apply bg-slate-600 text-white;
+}
+
+div.spider-game div.scores-link {
+	@apply mx-2;
+}
+
+div.scores-link a {
+	@apply font-bold text-indigo-600;
+}
+
+div.scores-link a:hover {
+	@apply underline text-indigo-900;
 }
 </style>
