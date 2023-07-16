@@ -34,6 +34,7 @@ const tabs: TabType[] = [
   { to: "/tengrand", text: "Ten Grand" },
   { to: "/concentration", text: "Concentration" },
   { to: "/pokersquares", text: "Poker Squares" },
+  { to: "/spider", text: "Spider" },
 ];
 const userLinks: TabType[] = [
   { to: "/login", text: "Sign In" },
