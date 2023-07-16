@@ -1,5 +1,8 @@
 <template>
 	<div class="spider-game">
+		<Head>
+			<Title>Spider</Title>
+		</Head>
 		<div class="flex flex-wrap justify-between pl-2">
 			<h1>Spider</h1>
 			<div class="scores-link">

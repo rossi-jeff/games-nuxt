@@ -1,5 +1,8 @@
 <template>
 	<div class="spider-scores">
+		<Head>
+			<Title>Spider Scores</Title>
+		</Head>
 		<h3>Spider Scores</h3>
 		<div v-if="state.Items && state.Items.length > 0">
 			<SpiderScoresList :items="state.Items" />
